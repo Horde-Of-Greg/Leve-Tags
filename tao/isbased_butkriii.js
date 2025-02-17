@@ -35,7 +35,7 @@ var doEpicKrill = Math.random() < 0.00001 ? true : isEpic;
 
 // Makes the result be an epic fail if the user is blacklisted
 // or with a 0.05% chance if the user isn't whitelisted
-var doEpicFail = Math.random() < 0.05 || isBlacklisted ? true : isBlacklisted;
+var doEpicFail = isEpic ? false : Math.random() < 0.05 || isBlacklisted;
 
 //Outputs
 if (doEpicFail) {
