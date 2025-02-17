@@ -38,7 +38,7 @@ var doEpicKrill = Math.random() < 0.00001 ? true : isEpic;
 var doEpicFail = Math.random() < 0.05 || isBlacklisted ? true : isBlacklisted;
 
 //Outputs
-if (doAnEpicFail) {
+if (doEpicFail) {
   msg.reply("LOL Epic Fail");
 }
 
