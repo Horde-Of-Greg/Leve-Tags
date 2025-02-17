@@ -31,11 +31,11 @@ var isEpic = noSkillIssue.includes(msg.author.id);
 var isBlacklisted = blacklisted.includes(msg.author.id);
 
 // Give users a 0.00001% chance of rolling a special krill
-doEpicKrill = Math.random() < 0.00001 ? true : isEpic;
+var doEpicKrill = Math.random() < 0.00001 ? true : isEpic;
 
 // Makes the result be an epic fail if the user is blacklisted
 // or with a 0.05% chance if the user isn't whitelisted
-doEpicFail = Math.random() < 0.05 || isBlacklisted ? true : isBlacklisted;
+var doEpicFail = Math.random() < 0.05 || isBlacklisted ? true : isBlacklisted;
 
 //Outputs
 if (doAnEpicFail) {
