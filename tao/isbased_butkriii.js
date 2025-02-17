@@ -42,10 +42,10 @@ if (doEpicFail) {
   msg.reply("LOL Epic Fail");
 }
 
-if (doBasicKrill) {
+if (doEpicKrill) {
+  util.executeTag("special_kriii");
+} else {
   msg.reply(
     "Vanilla krill LOL laugh at this user https://cdn.discordapp.com/attachments/954620685848825886/1234949802752737340/krill-issue.png?ex=66329821&is=663146a1&hm=8a10ec88516b82aa285335c214782b699c01a55dec7247326381e1e2e792828e&"
   );
-} else {
-  util.executeTag("special_kriii");
 }
