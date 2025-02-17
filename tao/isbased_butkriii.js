@@ -27,7 +27,7 @@ let noSkillIssue = [
 
 let blacklisted = [];
 
-var isEpic = based.includes(msg.author.id);
+var isEpic = noSkillIssue.includes(msg.author.id);
 var isBlacklisted = blacklisted.includes(msg.author.id);
 
 // Give users a 0.00001% chance of rolling a special krill
