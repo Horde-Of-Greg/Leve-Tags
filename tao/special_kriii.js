@@ -40,6 +40,8 @@ let messages = {
 };
 
 function chancedSend(key, chance) {
+  if (whitelists[key].includes(msg.author.id) && Math.random() < chance) {
+    msg.reply(messages[key]);
   if (whitelists.get(key).includes(msg.author.id) && Math.random() < chance) {
     msg.reply(messages.get(key));
   }

@@ -15,7 +15,7 @@ let messages = {
 
 function chancedSend(key, chance) {
   if (Math.random() < chance) {
-    msg.reply(messages.get(key));
+    msg.reply(messages[key]);
   }
 }
 
