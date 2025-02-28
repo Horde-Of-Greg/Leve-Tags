@@ -92,12 +92,12 @@ function findUserLists(listType) {
 
 findUserLists(generalLists);
 
-if (userLists[noSkillIssue]) {
+if (userLists["noSkillIssue"]) {
   findUserLists(specialLists);
 }
 
 // Construct the message
-if (userLists[blacklist]) {
+if (userLists["blacklist"]) {
   msg.reply("You will always get an epic fail. Skill issue.");
 }
 
@@ -108,15 +108,16 @@ function updateWorkingProbability(probabilitySet, key) {
   workingProbability = workingProbability * (1 - probabilitySet[key]);
 }
 
-if (!userLists[noSkillIssue]) {
-  message += "\n epicFail (" + (1 - workingProbability) + "%)";
+if (!userLists["noSkillIssue"]) {
   updateWorkingProbability(generalProbabilities, "epicKrillNormal");
+  message += "\n epicFail (" + workingProbability * 100 + "%)";
 }
 
 for (const key in specialProbabilities) {
-  if (possibleRolls.includes(key)) {
+  if (userLists[key]) {
     workingProbability = workingProbability * specialProbabilities[key];
-    message += "\n " + key + " (" + workingProbability + "%)";
+    message += "\n " + key + " (" + workingProbability * 100 + "%)";
+    updateWorkingProbability(specialProbabilities, key);
   }
 }
 
