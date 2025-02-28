@@ -23,6 +23,7 @@ let noSkillIssue = [
   "517023348513964043", //BoulesDeFromages
   "554782382025211915", //DarkFrost
   "201370981921456128", //Exa
+  "561157948924100634", //Sqrt
 ];
 
 let blacklisted = [];

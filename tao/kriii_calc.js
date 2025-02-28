@@ -52,6 +52,7 @@ let generalLists = {
     "517023348513964043", //BoulesDeFromages
     "554782382025211915", //DarkFrost
     "201370981921456128", //Exa
+    "561157948924100634", //Sqrt
   ],
 };
 
@@ -97,28 +98,66 @@ if (userLists["noSkillIssue"]) {
 }
 
 // Construct the message
+var message = "Here are your possible rolls: ";
+var storedProbabilities = {};
+
+function calcAndStoreProbability(probabilitySet, key) {
+  let output = 1;
+  for (const probability in storedProbabilities) {
+    output = output * (1 - storedProbabilities[probability]);
+  }
+  output = output * probabilitySet[key];
+  storedProbabilities[key] = probabilitySet[key];
+  return output;
+}
+
+function roundToFour(integer) {
+  return parseFloat(integer.toFixed(4));
+}
+
 if (userLists["blacklist"]) {
   msg.reply("You will always get an epic fail. Skill issue.");
 }
 
-var message = "Here are your possible rolls: ";
-var workingProbability = 1;
-
-function updateWorkingProbability(probabilitySet, key) {
-  workingProbability = workingProbability * (1 - probabilitySet[key]);
-}
-
+//
 if (!userLists["noSkillIssue"]) {
-  updateWorkingProbability(generalProbabilities, "epicKrillNormal");
-  message += "\n epicFail (" + workingProbability * 100 + "%)";
+  message +=
+    "\n epicFail (" +
+    roundToFour(
+      calcAndStoreProbability(generalProbabilities, "epicFail") * 100
+    ) +
+    "%)";
 }
 
+// Special kriiis
 for (const key in specialProbabilities) {
   if (userLists[key]) {
-    workingProbability = workingProbability * specialProbabilities[key];
-    message += "\n " + key + " (" + workingProbability * 100 + "%)";
-    updateWorkingProbability(specialProbabilities, key);
+    message +=
+      "\n " +
+      key +
+      " (" +
+      roundToFour(calcAndStoreProbability(specialProbabilities, key) * 100) +
+      "%)";
   }
 }
+
+// Based kriiis
+if (userLists["noSkillIssue"]) {
+  for (const key in basedProbabilities) {
+    message +=
+      "\n " +
+      key +
+      " (" +
+      roundToFour(calcAndStoreProbability(basedProbabilities, key) * 100) +
+      "%)";
+  }
+}
+
+// Basic kriii
+remainder = 1;
+for (const probability in storedProbabilities) {
+  remainder = remainder * (1 - storedProbabilities[probability]);
+}
+message += "\n Basic Blue Kriii (" + roundToFour(remainder * 100) + "%)";
 
 msg.reply(message);
