@@ -14,7 +14,7 @@ function getAllOredics() {
 }
 
 function getOredicTag(stepName, version) {
-  return `nfu_oredic_${stepName}_${version}`;
+  output += `nfu_oredic_${stepName}_${version}`;
 }
 
 function getAllSteps(oredics, version) {
@@ -28,7 +28,7 @@ function getAllSteps(oredics, version) {
 }
 
 function getCurrentMinVer() {
-  return util.fetchTag("tao_storage_curr_nomi_version").body;
+  return util.fetchTag("tao_storage_curr_nomi_version").body.split(".")[1];
 }
 
 function isExistingOredic(stepName, version) {
