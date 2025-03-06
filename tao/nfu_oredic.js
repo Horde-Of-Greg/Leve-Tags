@@ -14,10 +14,7 @@ function getAllOredics() {
 }
 
 function getOredicTag(stepName, version) {
-  let output = "```";
-  output += `nfu_oredic_${stepName}_${version}`;
-  output += "```";
-  return output;
+  return `nfu_oredic_${stepName}_${version}`;
 }
 
 function getAllSteps(oredics, version) {
@@ -34,6 +31,13 @@ function getCurrentMinVer() {
   return util.fetchTag("tao_storage_curr_nomi_version").body.split(".")[1];
 }
 
+function formattedAnswer(body) {
+  title = body.split("\n")[0];
+  body = body.replace(title, "");
+  codeBlock = "```";
+  return `##${title}\n${codeBlock}${body}${codeBlock}`;
+}
+
 function isExistingOredic(stepName, version) {
   if (getAllSteps(getAllOredics(), version).includes(stepName)) {
     return true;
@@ -45,17 +49,19 @@ function isExistingOredic(stepName, version) {
 function sendAllOredics(oredics, version) {
   let output = "";
   for (let step of getAllSteps(oredics, version)) {
-    output += getTagBody(getOredicTag(step, version)) + "\n";
+    output += formattedAnswer(getTagBody(getOredicTag(step, version))) + "\n";
   }
   msg.reply(output);
 }
 
 function sendOredic(step, version) {
-  msg.reply(getTagBody(getOredicTag(step, version)));
+  msg.reply(formattedAnswer(getTagBody(getOredicTag(step, version))));
 }
 
 function sendAllSteps(oredics, version) {
-  msg.reply(getAllSteps(oredics, version).join(", "));
+  output = "Here are all the steps you can call:\n";
+  output += getAllSteps(oredics, version).join("\n"));
+  msg.reply(output);
 }
 
 function sendIsAStep(step, version) {
