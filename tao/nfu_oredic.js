@@ -84,7 +84,7 @@ function sendAddString() {
       "  tag body : \n" +
       "    Title: The title of the oredic\n" +
       "    Content: The actual oredic string\n" +
-      "  version of Nomi this is valid for : 1.6, 1.6.1"
+      "  version of Nomi this is valid for : 1.6, 1.6.1" +
       "  - Example 2: \n" +
       "  tag name : nfu_oredic_crushing-space-ores_7\n" +
       "  tag body : \n" +
