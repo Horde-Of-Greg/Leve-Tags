@@ -84,13 +84,13 @@ function sendAddString() {
       "  tag body : \n" +
       "    Title: The title of the oredic\n" +
       "    Content: The actual oredic string\n" +
-      "  version of Nomi this is valid for : 1.6, 1.6.1, 1.6.2, etc."
+      "  version of Nomi this is valid for : 1.6, 1.6.1"
       "  - Example 2: \n" +
-      "  tag name : nfu_oredic_curshing-space-ores_7\n" +
+      "  tag name : nfu_oredic_crushing-space-ores_7\n" +
       "  tag body : \n" +
       "    Title: Space Ore Crush\n" +
       "    Content: The oredic string for crushing space ores\n" +
-      "  version of Nomi this is valid for : 1.7, 1.7.1, 1.7.2, etc."
+      "  version of Nomi this is valid for : 1.7, 1.7.1, 1.7.2, 1.7.3, 1.7.4"
   );
 }
 
