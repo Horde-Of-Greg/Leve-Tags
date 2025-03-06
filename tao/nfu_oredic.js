@@ -14,7 +14,10 @@ function getAllOredics() {
 }
 
 function getOredicTag(stepName, version) {
+  let output = "```";
   output += `nfu_oredic_${stepName}_${version}`;
+  output += "```";
+  return output;
 }
 
 function getAllSteps(oredics, version) {
