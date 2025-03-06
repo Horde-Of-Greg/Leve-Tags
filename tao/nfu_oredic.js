@@ -79,12 +79,14 @@ function sendAddString() {
       "  - Tag body: \n" +
       "    <title>\n" +
       "    <content>\n" +
+      "\n" +
       "  - Example: \n" +
       "  tag name : nfu_oredic_good-title-with-dashes-for-spaces_6\n" +
       "  tag body : \n" +
       "    Title: The title of the oredic\n" +
       "    Content: The actual oredic string\n" +
-      "  version of Nomi this is valid for : 1.6, 1.6.1" +
+      "  version of Nomi this is valid for : 1.6, 1.6.1\n" +
+      "\n" +
       "  - Example 2: \n" +
       "  tag name : nfu_oredic_crushing-space-ores_7\n" +
       "  tag body : \n" +
