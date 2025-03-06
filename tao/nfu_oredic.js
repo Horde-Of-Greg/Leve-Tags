@@ -72,6 +72,18 @@ function sendIsAStep(step, version) {
   }
 }
 
+function sendAddString() {
+  msg.reply(
+    "To add a new oredic, you need to create a new tag with the following format:\n" +
+      "  - Tag name: nfu_oredic_<stepName>_<minorVerNumberNomi>\n" +
+      "  - Tag body: <title>\n<content>\n" +
+      "  - Example: \n" +
+      "  tag name : nfu_oredic_title_6\n" +
+      "  tag body : Title\nContent\n" +
+      "  version of Nomi this is valid for : 1.6, 1.6.1, 1.6.2, etc."
+  );
+}
+
 function sendHelpString() {
   msg.reply(
     "Usage: nfu_oredic <arg>\n" +
@@ -79,7 +91,8 @@ function sendHelpString() {
       "  - all: returns all the oredics\n" +
       "  - steps: returns all the that you can call\n" +
       "  - <step>: returns the oredic for the given step\n" +
-      "  - is_step <step>: returns whether the step exists\n"
+      "  - is_step <step>: returns whether the step exists\n" +
+      "  - add : explains how to add a new oredic"
   );
 }
 
