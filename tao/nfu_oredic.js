@@ -76,11 +76,21 @@ function sendAddString() {
   msg.reply(
     "To add a new oredic, you need to create a new tag with the following format:\n" +
       "  - Tag name: nfu_oredic_<stepName>_<minorVerNumberNomi>\n" +
-      "  - Tag body: <title>\n<content>\n" +
+      "  - Tag body: \n" +
+      "    <title>\n" +
+      "    <content>\n" +
       "  - Example: \n" +
-      "  tag name : nfu_oredic_title_6\n" +
-      "  tag body : Title\nContent\n" +
+      "  tag name : nfu_oredic_good-title-with-dashes-for-spaces_6\n" +
+      "  tag body : \n" +
+      "    Title: The title of the oredic\n" +
+      "    Content: The actual oredic string\n" +
       "  version of Nomi this is valid for : 1.6, 1.6.1, 1.6.2, etc."
+      "  - Example 2: \n" +
+      "  tag name : nfu_oredic_curshing-space-ores_7\n" +
+      "  tag body : \n" +
+      "    Title: Space Ore Crush\n" +
+      "    Content: The oredic string for crushing space ores\n" +
+      "  version of Nomi this is valid for : 1.7, 1.7.1, 1.7.2, etc."
   );
 }
 
@@ -127,6 +137,8 @@ function determineLogic(input, version) {
     sendHelpString();
   } else if (command === "debug" || command === "d") {
     sendDebugString();
+  } else if (command === "add") {
+    sendAddString();
   } else {
     msg.reply(
       "Invalid argument. Please use `nfu_oredic help` for more information."
