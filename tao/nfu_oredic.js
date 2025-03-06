@@ -33,9 +33,9 @@ function getCurrentMinVer() {
 
 function formattedAnswer(body) {
   title = body.split("\n")[0];
-  body = body.replace(title, "");
-  codeBlock = "```";
-  return `##${title}\n${codeBlock}${body}${codeBlock}`;
+  body = body.split("\n").slice(1).join("\n");
+  const codeBlock = "```";
+  return `## ${title}\n${codeBlock}\n${body}\n${codeBlock}`;
 }
 
 function isExistingOredic(stepName, version) {
@@ -60,7 +60,7 @@ function sendOredic(step, version) {
 
 function sendAllSteps(oredics, version) {
   output = "Here are all the steps you can call:\n";
-  output += getAllSteps(oredics, version).join("\n"));
+  output += getAllSteps(oredics, version).join("\n");
   msg.reply(output);
 }
 
