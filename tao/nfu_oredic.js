@@ -74,41 +74,54 @@ function sendHelpString() {
   );
 }
 
+function sendDebugString() {
+  output = "";
+  output += "Current version: " + getCurrentMinVer() + "\n";
+  output += "Received input: " + tag.args + "\n";
+  output +=
+    "Read from version tag: " +
+    util.fetchTag("tao_storage_curr_nomi_version").body +
+    "\n";
+  output += "All oredics: " + getAllOredics() + "\n";
+  output += "All steps: " + getAllSteps(getAllOredics(), getCurrentMinVer());
+
+  if (!output.trim()) output = "Leveret is working but debug output is empty.";
+  msg.reply(output);
+}
+
 // Main functions
 function determineLogic(input, version) {
-  switch (input[0]) {
-    case "all" | "a":
-      sendAllOredics(getAllOredics(), version);
-      break;
-    case "steps" | "s":
-      sendAllSteps(getAllOredics(), version);
-      break;
-    case /is_step .+/:
-      sendIsAStep(input[1], version);
-      break;
-    case isExistingOredic(input[0], version):
-      sendOredic(input[0], version);
-      break;
-    case "help" | "h":
-      sendHelpString();
-      break;
-    default:
-      msg.reply(
-        "Invalid argument. Please use `nfu_oredic help` for more information."
-      );
-      break;
+  const command = input[0];
+
+  if (command === "all" || command === "a") {
+    sendAllOredics(getAllOredics(), version);
+  } else if (command === "steps" || command === "s") {
+    sendAllSteps(getAllOredics(), version);
+  } else if (command.startsWith("is_step")) {
+    sendIsAStep(input[1], version);
+  } else if (isExistingOredic(command, version)) {
+    sendOredic(command, version);
+  } else if (command === "help" || command === "h") {
+    sendHelpString();
+  } else if (command === "debug" || command === "d") {
+    sendDebugString();
+  } else {
+    msg.reply(
+      "Invalid argument. Please use `nfu_oredic help` for more information."
+    );
   }
 }
 
 function main() {
-  // Fetch the args and the current version
-  const input = util.args;
   const version = getCurrentMinVer();
-  // If no input is given, return all oredics
-  if (input == undefined) {
+  let args = tag.args;
+
+  if (!args) {
     sendAllOredics(getAllOredics(), version);
+    return;
   }
-  // If input is given, determine the logic
+
+  const input = args.split(" ");
   determineLogic(input, version);
 }
 
