@@ -31,16 +31,100 @@ function getCurrentMinVer() {
   return util.fetchTag("tao_storage_curr_nomi_version").body.split(".")[1];
 }
 
+// Helper functions
+function removeDoubleGrouping(str) {
+  let prev;
+  // This regex matches an opening parenthesis, optional whitespace,
+  // another opening parenthesis, then a sequence of characters that are not parentheses,
+  // then a closing parenthesis, optional whitespace, and a closing parenthesis.
+  do {
+    prev = str;
+    str = str.replace(/\(\s*\(([^()]+)\)\s*\)/g, "($1)");
+  } while (str !== prev);
+  return str;
+}
+
+function forceWildcardFormatting(str) {
+  // Change all occurrences of "(*...|*...)" to "*(...|...)"
+  const regex = /\(([^)]+)\)/g;
+  let match;
+  let transformed = str;
+  // We'll track index changes with an offset
+  let offset = 0;
+
+  while ((match = regex.exec(str)) !== null) {
+    const fullMatch = match[0]; // e.g. "(*Chalcopyrite|*Cooperite|*Tetrahedrite|*Bornite|*Chalcocite|*Pentlandite)"
+    const groupContent = match[1]; // the inner part without parentheses
+    const oreName = groupContent.split("|");
+
+    // Check if every alternative starts with "*"
+    if (oreName.every((alt) => alt.startsWith("*"))) {
+      // Remove the wildcard from each alternative
+      const newOreName = oreName.map((alt) => alt.slice(1));
+      const newGroup = "(" + newOreName.join("|") + ")";
+
+      // Calculate the actual index in the transformed string
+      const startIndex = match.index + offset;
+      // Replace the old group with the new formatted group
+      transformed =
+        transformed.slice(0, startIndex) +
+        newGroup +
+        transformed.slice(startIndex + fullMatch.length);
+
+      // Adjust offset for difference in length
+      offset += newGroup.length - fullMatch.length;
+
+      // Check if a wildcard is immediately before the group; if not, insert one.
+      if (startIndex > 0 && transformed[startIndex - 1] !== "*") {
+        transformed =
+          transformed.slice(0, startIndex) +
+          "*" +
+          transformed.slice(startIndex);
+        offset += 1;
+      }
+    }
+  }
+  return transformed;
+}
+
+function formatOredicString(oredicString) {
+  // Remove all spaces
+  let str = oredicString.replace(/ /g, "");
+  // Remove all double brackets
+  str = removeDoubleGrouping(str);
+  // Force wildcard formatting
+  str = forceWildcardFormatting(str);
+  return str;
+}
+
+function includesEscapeStrings(str) {
+  if (str.startsWith("\\text")) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 function formattedAnswer(body) {
   //Fetch the title and the oredic string from the body
   var title = body.split("\n")[0];
-  var oredic = body.replace(title, "");
+  var text = body.replace(title, "");
   // Format the title and the oredic string
   title = title.replace(":", "");
-  oredic = oredic.replace(/\n/g, "");
+  text = text.replace(/\n/g, "");
   // Format the answer
   const codeBlock = "```";
-  return `## ${title}:\n${codeBlock}\n${oredic}\n${codeBlock}`;
+  switch (includesEscapeStrings(text)) {
+    case 0: // If the oredic string does not start with any escape strings
+      return `## ${title}:\n${codeBlock}\n${formatOredicString(
+        text
+      )}\n${codeBlock}`;
+    case 1: // If the oredic string starts with \text
+      return `## ${title}:\n${codeBlock}\n${text.replace(
+        /\\text/g,
+        ""
+      )}\n${codeBlock}`;
+  }
 }
 
 function isExistingOredic(stepName, version) {
