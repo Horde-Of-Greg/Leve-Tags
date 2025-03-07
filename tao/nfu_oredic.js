@@ -32,10 +32,15 @@ function getCurrentMinVer() {
 }
 
 function formattedAnswer(body) {
-  title = body.split("\n")[0];
-  body = body.split("\n").slice(1).join("\n");
+  //Fetch the title and the oredic string from the body
+  var title = body.split("\n")[0];
+  var oredic = body.replace(title, "");
+  // Format the title and the oredic string
+  title = title.replace(":", "");
+  oredic = oredic.replace(/\n/g, "");
+  // Format the answer
   const codeBlock = "```";
-  return `## ${title}\n${codeBlock}\n${body}\n${codeBlock}`;
+  return `## ${title}:\n${codeBlock}\n${oredic}\n${codeBlock}`;
 }
 
 function isExistingOredic(stepName, version) {
@@ -49,6 +54,7 @@ function isExistingOredic(stepName, version) {
 function sendAllOredics(oredics, version) {
   let output = "";
   for (let step of getAllSteps(oredics, version)) {
+    output += "----------------\n";
     output += formattedAnswer(getTagBody(getOredicTag(step, version))) + "\n";
   }
   msg.reply(output);
