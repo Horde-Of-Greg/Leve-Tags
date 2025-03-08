@@ -4,10 +4,18 @@ function main() {
    */
 
   // Fetch the variables
-  let input = tag.args;
-  let args = fetchArgs(input);
-  let reactorJSON = fetchReactorJSON(input);
+  let args = tag.args;
+  args = fetchValidArgs(input);
+  let attachment = msg.attachments[0].content;
   const nomiVersion = fetchNomiVersion();
+
+  // Check if the attachment is a JSON file
+  if (!isJSON(attachment) || !attachment) {
+    util.reply("Invalid JSON provided. Please provide a JSON file.");
+  }
+  if (isJSON(attachment)) {
+    let [reactorJSON, reactorFormat] = validateJSON(attachment);
+  }
 
   // Define any options
   const options = {
@@ -24,7 +32,7 @@ function main() {
 
   // Reply with the formatted output
   const title = generateTitle(options);
-  util.reply(msg.reply(formatOutput(formattedReactor, title, options)));
+  msg.reply(formatOutput(formattedReactor, title, options, version));
 }
 
 /*
@@ -62,6 +70,16 @@ function calculateStats(json, version) {
 /*
  * Helper Functions
  */
+function isJSON(attachment) {
+  // Check if the attachment is a JSON file
+  try {
+    JSON.parse(attachment);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function isValidJSON(json) {
   if (isHellrage(json) || isEinsteinium(json)) {
     return true;
@@ -128,7 +146,7 @@ function sendHelpString() {
   util.reply(helpString);
 }
 
-function formatOutput(output, title, options) {
+function formatOutput(output, title, options, version) {
   // Format the output string for display
 }
 
