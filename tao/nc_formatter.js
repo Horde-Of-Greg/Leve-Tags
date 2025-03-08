@@ -79,10 +79,14 @@ function isEinsteinium(json) {
 
 function fetchArgs(input) {
   // Extract the arguments from the input
+  const regex = /--\w+/g;
+  return input.match(regex);
 }
 
 function fetchReactorJSON(input) {
   // Extract the reactor JSON string from the input
+  args = fetchArgs(input);
+  return input.replace(args, "").trim();
 }
 
 function fetchNomiVersion() {
