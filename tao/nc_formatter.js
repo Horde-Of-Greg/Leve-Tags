@@ -1,15 +1,21 @@
 function main() {
+  /*
+   * Main function to execute all the methods
+   */
+
+  // Fetch the variables
   let input = tag.args;
   let args = fetchArgs(input);
   let reactorJSON = fetchReactorJSON(input);
+  const nomiVersion = fetchNomiVersion();
 
   // Define any options
   const options = {
     excludeActiveCoolers: args.includes("--excludeActiveCoolers"),
-    excludeCasings: args.includes("--excludeCasings"),
-    excludeModerators: args.includes("--excludeModerators"),
-    graphite: args.includes("--graphite"),
-    beryllium: args.includes("--beryllium"),
+    useTransparentCasings: args.includes("--useTransparentCasings"),
+    useSolidCasings: args.includes("--useSolidCasings"),
+    useGraphite: args.includes("--useGraphite"),
+    useBeryllium: args.includes("--useBeryllium"),
     displayStats: args.includes("--displayStats"),
   };
 
@@ -17,7 +23,7 @@ function main() {
   const formattedReactor = formatReactor(reactorJSON, options);
 
   // Reply with the formatted output
-  title = generateTitle(options);
+  const title = generateTitle(options);
   util.reply(msg.reply(formatOutput(formattedReactor, title, options)));
 }
 
@@ -28,34 +34,36 @@ function main() {
 // Example implementation of formatReactor (this would be the core transformation logic)
 function formatReactor(json, opts) {
   // Process json based on its type (Hellrage, LEU‑235, or Einsteinium) and options
+  if (!isValidJSON(json)) {
+    return "Invalid JSON provided. Please provide a JSON from either Hellrage, LEU-235, or Einsteinium.";
+  }
   if (isHellrage(json)) {
     return formatHellrage(json, opts);
-  } else if (isLEU235(json)) {
-    return formatLEU235(json, opts);
-  } else if (isEinsteinium(json)) {
+  }
+  if (isEinsteinium(json)) {
     return formatEinsteinium(json, opts);
-  } else {
-    return "Invalid Reactor Type";
   }
 }
 
 function formatHellrage(json, opts) {
-  // Implement the formatting logic for Hellrage reactors
-}
-
-function formatLEU235(json, opts) {
-  // Implement the formatting logic for LEU‑235 reactors
+  // Implement the formatting logic for Hellrage/LEU-235 reactors
 }
 
 function formatEinsteinium(json, opts) {
   // Implement the formatting logic for Einsteinium reactors
 }
 
+function calculateStats(json, version) {
+  // Calculate the stats of the reactor
+  const configs = fetchConfigs(version);
+  // Implement the calculations
+}
+
 /*
  * Helper Functions
  */
 function isValidJSON(json) {
-  if (isHellrage(json) || isLEU235(json) || isEinsteinium(json)) {
+  if (isHellrage(json) || isEinsteinium(json)) {
     return true;
   }
   return false;
@@ -63,10 +71,6 @@ function isValidJSON(json) {
 
 function isHellrage(json) {
   // Check if the JSON is of type Hellrage
-}
-
-function isLEU235(json) {
-  // Check if the JSON is of type LEU‑235
 }
 
 function isEinsteinium(json) {
@@ -81,6 +85,23 @@ function fetchReactorJSON(input) {
   // Extract the reactor JSON string from the input
 }
 
+function fetchNomiVersion() {
+  // Fetch the version of Nomi-CEu
+  const fullVersion = util.fetchTag("tao_storage_curr_nomi_version");
+  const [major, minor, patch] = fullVersion.split(".");
+  return { major, minor, patch };
+}
+
+function fetchConfigs(version) {
+  // Fetch the configurations of NC for the given Nomi version
+  const fullConfigs = util.fetchTag(
+    `tao_storage_nc_configs_${version.minor}_${version.patch}`
+  );
+  const [power, speed, cooling] = fullConfigs.split(",");
+  // Exact elements to be extracted TBD
+  return { power, speed, cooling };
+}
+
 /*
  * View Functions
  */
@@ -92,10 +113,10 @@ function sendHelpString() {
   Usage: \`!nc_formatter <args> <reactor_json>\`
   Available Arguments:
   - \`--excludeActiveCoolers\`: Exclude active coolers in the output.
-  - \`--excludeCasings\`: Exclude casings in the output.
-  - \`--excludeModerators\`: Exclude moderators in the output.
-  - \`--graphite\`: Use graphite blocks as moderators.
-  - \`--beryllium\`: Use beryllium blocks as moderators.
+  - \`--useTransparentCasings\`: Use transparent casings in the output.
+  - \`--useSolidCasings\`: Use solid casings in the output.
+  - \`--useGraphite\`: Use graphite blocks as moderators.
+  - \`--useBeryllium\`: Use beryllium blocks as moderators.
   - \`--displayStats\`: Display the reactor stats in the output.
   - \`--help\`: Display this help message.
   You can also use the website by Nomi-CEu at https://nomi-ceu.github.io/NC-Formatter/
@@ -103,7 +124,7 @@ function sendHelpString() {
   util.reply(helpString);
 }
 
-function formatOutput(output) {
+function formatOutput(output, title, options) {
   // Format the output string for display
 }
 
