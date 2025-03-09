@@ -1,4 +1,45 @@
-// Essential Logic
+// TODO: Add logic comprehension for the oredics
+// TODO: Add even more format forcing for the oredics
+
+// Main function
+function main() {
+  const version = getCurrentMinVer();
+  let args = tag.args;
+
+  if (!args) {
+    sendAllOredics(getAllOredics(), version);
+    return;
+  }
+
+  const input = args.split(" ");
+  determineLogic(input, version);
+}
+
+function determineLogic(input, version) {
+  const command = input[0];
+
+  if (command === "all" || command === "a") {
+    sendAllOredics(getAllOredics(), version);
+  } else if (command === "steps" || command === "s") {
+    sendAllSteps(getAllOredics(), version);
+  } else if (command.startsWith("is_step")) {
+    sendIsAStep(input[1], version);
+  } else if (isExistingOredic(command, version)) {
+    sendOredic(command, version);
+  } else if (command === "help" || command === "h") {
+    sendHelpString();
+  } else if (command === "debug" || command === "d") {
+    sendDebugString();
+  } else if (command === "add") {
+    sendAddString();
+  } else {
+    msg.reply(
+      "Invalid argument. Please use `nfu_oredic help` for more information."
+    );
+  }
+}
+
+// ------- Fetch/Get Logic -------
 function getTagBody(tagName) {
   var tag = util.fetchTag(tagName);
   var tagBody = tag.body;
@@ -19,8 +60,9 @@ function getOredicTag(stepName, version) {
 function getAllSteps(oredics, version) {
   let output = [];
   for (let oredic of oredics) {
-    if (oredic.includes(version)) {
-      output.push(oredic.split("_")[2]);
+    const stepName = oredic.split("_")[2];
+    if (oredic.includes(version) && !isBlacklisted(stepName)) {
+      output.push(stepName);
     }
   }
   return output;
@@ -30,61 +72,43 @@ function getCurrentMinVer() {
   return util.fetchTag("tao_storage_curr_nomi_version").body.split(".")[1];
 }
 
-// Helper functions
-function removeDoubleGrouping(str) {
-  let prev;
-  // Change all occurrences of "((...)(...))" to "(... ...)"
-  do {
-    prev = str;
-    str = str.replace(/\(\s*\(([^()]+)\)\s*\)/g, "($1)");
-  } while (str !== prev);
-  return str;
+function getTitleAndText(body) {
+  var title = body.split("\n")[0];
+  var text = body.replace(title, "");
+  title = title.replace(":", "");
+  text = text.replace(/\n/g, "");
+  return [title, text];
 }
 
-function forceWildcardFormatting(str) {
-  // Change all occurrences of "(*...|*...)" to "*(...|...)"
-  const regex = /\(([^)]+)\)/g;
-  let match;
-  let transformed = str;
-  let offset = 0;
+function fetchBlacklist() {
+  return util.fetchTag("tao_storage_oredic_blacklist").body.split(",");
+}
 
-  while ((match = regex.exec(str)) !== null) {
-    const fullMatch = match[0];
-    const groupContent = match[1];
-    const oreName = groupContent.split("|");
+function fetchShorteningMap() {
+  const data = util.fetchTag("tao_storage_oredic_shortening_map").body;
+  const map = new Map();
+  data.split("\n").forEach((line) => {
+    line = line.trim();
+    if (!line) return;
+    const [key, value] = line.split(",").map((s) => s.trim());
+    map.set(key, value);
+  });
+  const sortedEntries = [...map.entries()].sort(
+    (a, b) => b[0].length - a[0].length
+  );
+  return new Map(sortedEntries);
+}
 
-    if (oreName.every((alt) => alt.startsWith("*"))) {
-      const newOreName = oreName.map((alt) => alt.slice(1));
-      const newGroup = "(" + newOreName.join("|") + ")";
-
-      const startIndex = match.index + offset;
-      transformed =
-        transformed.slice(0, startIndex) +
-        newGroup +
-        transformed.slice(startIndex + fullMatch.length);
-
-      offset += newGroup.length - fullMatch.length;
-
-      if (startIndex > 0 && transformed[startIndex - 1] !== "*") {
-        transformed =
-          transformed.slice(0, startIndex) +
-          "*" +
-          transformed.slice(startIndex);
-        offset += 1;
-      }
-    }
+// ------- Boolean/Checking logic -------
+function isExistingOredic(stepName, version) {
+  if (getAllSteps(getAllOredics(), version).includes(stepName)) {
+    return true;
   }
-  return transformed;
+  return false;
 }
 
-function formatOredicString(oredicString) {
-  // Remove all spaces
-  let str = oredicString.replace(/ /g, "");
-  // Remove all double brackets
-  str = removeDoubleGrouping(str);
-  // Force wildcard formatting
-  str = forceWildcardFormatting(str);
-  return str;
+function isBlacklisted(stepName) {
+  return fetchBlacklist().includes(stepName);
 }
 
 function includesEscapeStrings(str) {
@@ -95,12 +119,35 @@ function includesEscapeStrings(str) {
   }
 }
 
-function getTitleAndText(body) {
-  var title = body.split("\n")[0];
-  var text = body.replace(title, "");
-  title = title.replace(":", "");
-  text = text.replace(/\n/g, "");
-  return [title, text];
+// ------- Transformation Logic -------
+function removeDoubleGrouping(str) {
+  return str.replace(/\(\(([\S\s]*?)\)\)/g, (match, capture) => {
+    return "(" + capture.replace(/[()]/g, "") + ")";
+  });
+}
+
+function forceWildcardFormatting(str) {
+  return str.replace(/\(([^)]+)\)/g, (match, groupContent) => {
+    const alternatives = groupContent.split("|");
+    if (alternatives.every((alt) => alt.startsWith("*"))) {
+      return (
+        "*" + "(" + alternatives.map((alt) => alt.slice(1)).join("|") + ")"
+      );
+    }
+    return match;
+  });
+}
+
+function formatOredicString(oredicString) {
+  // Remove all spaces
+  let str = oredicString.replace(/ /g, "");
+  // Remove all double brackets
+  str = removeDoubleGrouping(str);
+  // Force wildcard formatting
+  str = forceWildcardFormatting(str);
+  // Shorten the oredic string
+  str = shortenOredic(str);
+  return str;
 }
 
 function formattedAnswer(body) {
@@ -137,14 +184,33 @@ function embeddedAnswer(body) {
   }
 }
 
-function isExistingOredic(stepName, version) {
-  if (getAllSteps(getAllOredics(), version).includes(stepName)) {
-    return true;
+function shortenOreElement(element) {
+  const map = fetchShorteningMap();
+  for (let [key, value] of map) {
+    if (element.toLowerCase() === key.toLowerCase())
+      return `${capitalize(value)}*`;
   }
-  return false;
+  return element;
 }
 
-// Sending logic
+function shortenOredic(str) {
+  let result = str;
+  const map = fetchShorteningMap();
+  for (let [key, value] of map) {
+    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    result = result.replace(
+      new RegExp(escapedKey, "gi"),
+      `${capitalize(value)}*`
+    );
+  }
+  return result;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ------- Sending Logic -------
 function sendAllOredics(oredics, version) {
   let output = "";
   for (let step of getAllSteps(oredics, version)) {
@@ -234,48 +300,14 @@ function sendDebugString() {
     util.fetchTag("tao_storage_curr_nomi_version").body +
     "\n";
   output += "All oredics: " + getAllOredics() + "\n";
-  output += "All steps: " + getAllSteps(getAllOredics(), getCurrentMinVer());
+  output +=
+    "All steps: " + getAllSteps(getAllOredics(), getCurrentMinVer()) + "\n";
+  output += "Shortening map: " + fetchShorteningMap() + "\n";
+  output += "Shortened oredic: " + shortenOredic("aluminum") + "\n";
+  output += "Blacklist: " + fetchBlacklist() + "\n";
 
   if (!output.trim()) output = "Leveret is working but debug output is empty.";
   msg.reply(output);
-}
-
-// Main functions
-function determineLogic(input, version) {
-  const command = input[0];
-
-  if (command === "all" || command === "a") {
-    sendAllOredics(getAllOredics(), version);
-  } else if (command === "steps" || command === "s") {
-    sendAllSteps(getAllOredics(), version);
-  } else if (command.startsWith("is_step")) {
-    sendIsAStep(input[1], version);
-  } else if (isExistingOredic(command, version)) {
-    sendOredic(command, version);
-  } else if (command === "help" || command === "h") {
-    sendHelpString();
-  } else if (command === "debug" || command === "d") {
-    sendDebugString();
-  } else if (command === "add") {
-    sendAddString();
-  } else {
-    msg.reply(
-      "Invalid argument. Please use `nfu_oredic help` for more information."
-    );
-  }
-}
-
-function main() {
-  const version = getCurrentMinVer();
-  let args = tag.args;
-
-  if (!args) {
-    sendAllOredics(getAllOredics(), version);
-    return;
-  }
-
-  const input = args.split(" ");
-  determineLogic(input, version);
 }
 
 main();
