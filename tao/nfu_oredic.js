@@ -32,6 +32,8 @@ function determineLogic(input, version) {
     sendDebugString();
   } else if (command === "add") {
     sendAddString();
+  } else if (command === "formatting") {
+    sendGoodPracticesString();
   } else {
     msg.reply(
       "Invalid argument. Please use `nfu_oredic help` for more information."
@@ -120,13 +122,25 @@ function includesEscapeStrings(str) {
 }
 
 // ------- Transformation Logic -------
+
+// Current transformation logic operations:
+// 1. Remove all spaces
+// 2. Remove all double brackets (e.g. ((ore1|ore2)) -> (ore1|ore2)
+// 3. Force wildcard formatting
+//   i. If all alternatives in a group start with *, prepend * to the group
+//   e.g. (*ore1|*ore2) -> *(ore1|ore2)
+//   ii. If all alternatives in a group end with *, append * to the group
+//   e.g. (ore1*|ore2*) -> (ore1|ore2)*
+// 4. Shorten the oredic strings using the shortening map
+// 5. Capitalize the first letter of the shortened oredic string
+
 function removeDoubleGrouping(str) {
   return str.replace(/\(\(([\S\s]*?)\)\)/g, (match, capture) => {
     return "(" + capture.replace(/[()]/g, "") + ")";
   });
 }
 
-function forceWildcardFormatting(str) {
+function forceWildcardPrepend(str) {
   return str.replace(/\(([^)]+)\)/g, (match, groupContent) => {
     const alternatives = groupContent.split("|");
     if (alternatives.every((alt) => alt.startsWith("*"))) {
@@ -138,13 +152,52 @@ function forceWildcardFormatting(str) {
   });
 }
 
+function forceWildcardAppend(str) {
+  return str.replace(/\(([^)]+)\)/g, (match, groupContent) => {
+    const alternatives = groupContent.split("|");
+    if (alternatives.every((alt) => alt.endsWith("*"))) {
+      return (
+        "(" + alternatives.map((alt) => alt.slice(0, -1)).join("|") + ")" + "*"
+      );
+    }
+    return match;
+  });
+}
+
+function shortenOreElement(element) {
+  const map = fetchShorteningMap();
+  for (let [key, value] of map) {
+    if (element.toLowerCase() === key.toLowerCase())
+      return `${capitalize(value)}*`;
+  }
+  return element;
+}
+
+function shortenOredic(str) {
+  let result = str;
+  const map = fetchShorteningMap();
+  for (let [key, value] of map) {
+    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    result = result.replace(
+      new RegExp(escapedKey, "gi"),
+      `${capitalize(value)}*`
+    );
+  }
+  return result;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function formatOredicString(oredicString) {
   // Remove all spaces
   let str = oredicString.replace(/ /g, "");
   // Remove all double brackets
   str = removeDoubleGrouping(str);
   // Force wildcard formatting
-  str = forceWildcardFormatting(str);
+  str = forceWildcardPrepend(str);
+  str = forceWildcardAppend(str);
   // Shorten the oredic string
   str = shortenOredic(str);
   return str;
@@ -182,32 +235,6 @@ function embeddedAnswer(body) {
         value: text.replace(/\\text/g, ""),
       };
   }
-}
-
-function shortenOreElement(element) {
-  const map = fetchShorteningMap();
-  for (let [key, value] of map) {
-    if (element.toLowerCase() === key.toLowerCase())
-      return `${capitalize(value)}*`;
-  }
-  return element;
-}
-
-function shortenOredic(str) {
-  let result = str;
-  const map = fetchShorteningMap();
-  for (let [key, value] of map) {
-    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    result = result.replace(
-      new RegExp(escapedKey, "gi"),
-      `${capitalize(value)}*`
-    );
-  }
-  return result;
-}
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // ------- Sending Logic -------
@@ -284,9 +311,32 @@ function sendHelpString() {
             "* `steps`: returns all the that you can call\n" +
             "* `<step>`: returns the oredic for the given step\n" +
             "* `is_step <step>`: returns whether the step exists\n" +
-            "* `add` : explains how to add a new oredic",
+            "* `add` : explains how to add a new oredic\n" +
+            "* `formatting` : explains the formatting enforced by this tag",
         },
       ],
+    },
+  });
+}
+
+function sendGoodPracticesString() {
+  msg.reply({
+    embed: {
+      title: "Formatting enforced by this tag",
+      description:
+        "These are the best practices enforced by this tag:\n" +
+        "* Remove all spaces\n" +
+        "* Remove all double brackets\n" +
+        "  e.g. `((ore1|ore2)) -> (ore1|ore2)`\n" +
+        "* If all the elements inside a group start with a wildcard,\n" +
+        "  prepend the wildcard to the group\n" +
+        "  e.g. `(*ore1|*ore2) -> *(ore1|ore2)`\n" +
+        "* If all the elements inside a group end with a wildcard,\n" +
+        "  append the wildcard to the group\n" +
+        "  e.g. `(ore1*|ore2*) -> (ore1|ore2)*`\n" +
+        "* Shorten the oredic string using the shortening map\n" +
+        "* Capitalize the first letter of the shortened oredic string\n\n" +
+        "**YOU DO NOT NEED TO ENFORCE THESE PRACTICES YOURSELF. THE TAG WILL DO IT FOR YOU.**",
     },
   });
 }
