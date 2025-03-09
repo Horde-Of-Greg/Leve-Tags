@@ -1,6 +1,5 @@
 // Essential Logic
 function getTagBody(tagName) {
-  // This returns the body of a tag without the backticks for .md formatting.
   var tag = util.fetchTag(tagName);
   var tagBody = tag.body;
   tagBody = tagBody.replace(/`/g, "");
@@ -34,9 +33,7 @@ function getCurrentMinVer() {
 // Helper functions
 function removeDoubleGrouping(str) {
   let prev;
-  // This regex matches an opening parenthesis, optional whitespace,
-  // another opening parenthesis, then a sequence of characters that are not parentheses,
-  // then a closing parenthesis, optional whitespace, and a closing parenthesis.
+  // Change all occurrences of "((...)(...))" to "(... ...)"
   do {
     prev = str;
     str = str.replace(/\(\s*\(([^()]+)\)\s*\)/g, "($1)");
@@ -49,32 +46,25 @@ function forceWildcardFormatting(str) {
   const regex = /\(([^)]+)\)/g;
   let match;
   let transformed = str;
-  // We'll track index changes with an offset
   let offset = 0;
 
   while ((match = regex.exec(str)) !== null) {
-    const fullMatch = match[0]; // e.g. "(*Chalcopyrite|*Cooperite|*Tetrahedrite|*Bornite|*Chalcocite|*Pentlandite)"
-    const groupContent = match[1]; // the inner part without parentheses
+    const fullMatch = match[0];
+    const groupContent = match[1];
     const oreName = groupContent.split("|");
 
-    // Check if every alternative starts with "*"
     if (oreName.every((alt) => alt.startsWith("*"))) {
-      // Remove the wildcard from each alternative
       const newOreName = oreName.map((alt) => alt.slice(1));
       const newGroup = "(" + newOreName.join("|") + ")";
 
-      // Calculate the actual index in the transformed string
       const startIndex = match.index + offset;
-      // Replace the old group with the new formatted group
       transformed =
         transformed.slice(0, startIndex) +
         newGroup +
         transformed.slice(startIndex + fullMatch.length);
 
-      // Adjust offset for difference in length
       offset += newGroup.length - fullMatch.length;
 
-      // Check if a wildcard is immediately before the group; if not, insert one.
       if (startIndex > 0 && transformed[startIndex - 1] !== "*") {
         transformed =
           transformed.slice(0, startIndex) +
@@ -105,15 +95,18 @@ function includesEscapeStrings(str) {
   }
 }
 
-function formattedAnswer(body) {
-  //Fetch the title and the oredic string from the body
+function getTitleAndText(body) {
   var title = body.split("\n")[0];
   var text = body.replace(title, "");
-  // Format the title and the oredic string
   title = title.replace(":", "");
   text = text.replace(/\n/g, "");
-  // Format the answer
+  return [title, text];
+}
+
+function formattedAnswer(body) {
+  var [title, text] = getTitleAndText(body);
   const codeBlock = "```";
+
   switch (includesEscapeStrings(text)) {
     case 0: // If the oredic string does not start with any escape strings
       return `## ${title}:\n${codeBlock}\n${formatOredicString(
@@ -124,6 +117,23 @@ function formattedAnswer(body) {
         /\\text/g,
         ""
       )}\n${codeBlock}`;
+  }
+}
+
+function embeddedAnswer(body) {
+  var [title, text] = getTitleAndText(body);
+
+  switch (includesEscapeStrings(text)) {
+    case 0: // If the oredic string does not start with any escape strings
+      return {
+        name: title,
+        value: formatOredicString(text),
+      };
+    case 1: // If the oredic string starts with \text
+      return {
+        name: title,
+        value: text.replace(/\\text/g, ""),
+      };
   }
 }
 
@@ -149,9 +159,14 @@ function sendOredic(step, version) {
 }
 
 function sendAllSteps(oredics, version) {
-  output = "Here are all the steps you can call:\n";
-  output += getAllSteps(oredics, version).join("\n");
-  msg.reply(output);
+  const steps = getAllSteps(oredics, version);
+  const output = steps.map((step) => `* ${step} \n`);
+  msg.reply({
+    embed: {
+      title: "All the available steps",
+      description: output.join(""),
+    },
+  });
 }
 
 function sendIsAStep(step, version) {
@@ -163,39 +178,51 @@ function sendIsAStep(step, version) {
 }
 
 function sendAddString() {
-  msg.reply(
-    "To add a new oredic, you need to create a new tag with the following format:\n" +
-      "  - Tag name: nfu_oredic_<stepName>_<minorVerNumberNomi>\n" +
-      "  - Tag body: \n" +
-      "    <title>\n" +
-      "    <content>\n" +
-      "\n" +
-      "  - Example: \n" +
-      "  tag name : nfu_oredic_good-title-with-dashes-for-spaces_6\n" +
-      "  tag body : \n" +
-      "    Title: The title of the oredic\n" +
-      "    Content: The actual oredic string\n" +
-      "  version of Nomi this is valid for : 1.6, 1.6.1\n" +
-      "\n" +
-      "  - Example 2: \n" +
-      "  tag name : nfu_oredic_crushing-space-ores_7\n" +
-      "  tag body : \n" +
-      "    Title: Space Ore Crush\n" +
-      "    Content: The oredic string for crushing space ores\n" +
-      "  version of Nomi this is valid for : 1.7, 1.7.1, 1.7.2, 1.7.3, 1.7.4"
-  );
+  msg.reply({
+    embed: {
+      title: "Adding a new oredic",
+      fields: [
+        {
+          name: "Tag Format",
+          value:
+            "**Tag name:** `nfu_oredic_<stepName>_<minorVerNumberNomi>`\n" +
+            "**Tag body:**\nTitle:\nContent:",
+        },
+        {
+          name: "Examples",
+          value:
+            "Tag name : **nfu_oredic_good-title-with-dashes-for-spaces_6**\n" +
+            "Title: The title of the oredic\n" +
+            "Content: The actual oredic string\n" +
+            "Valid for: 1.6, 1.6.1\n\n" +
+            "Tag name : **nfu_oredic_crushing-space-ores_7**\n" +
+            "Title: Space Ore Crush\n" +
+            "Content: The oredic string for crushing space ores\n" +
+            "Valid for: 1.7, 1.7.1, 1.7.2, 1.7.3, 1.7.4",
+        },
+      ],
+    },
+  });
 }
 
 function sendHelpString() {
-  msg.reply(
-    "Usage: nfu_oredic <arg>\n" +
-      "arg:\n" +
-      "  - all: returns all the oredics\n" +
-      "  - steps: returns all the that you can call\n" +
-      "  - <step>: returns the oredic for the given step\n" +
-      "  - is_step <step>: returns whether the step exists\n" +
-      "  - add : explains how to add a new oredic"
-  );
+  msg.reply({
+    embed: {
+      title: "Usage",
+      description: "Usage: nfu_oredic <arg>",
+      fields: [
+        {
+          name: "Args",
+          value:
+            "* `all`: returns all the oredics\n" +
+            "* `steps`: returns all the that you can call\n" +
+            "* `<step>`: returns the oredic for the given step\n" +
+            "* `is_step <step>`: returns whether the step exists\n" +
+            "* `add` : explains how to add a new oredic",
+        },
+      ],
+    },
+  });
 }
 
 function sendDebugString() {
