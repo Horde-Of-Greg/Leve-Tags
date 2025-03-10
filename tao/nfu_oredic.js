@@ -1,8 +1,6 @@
 // TODO: Add logic comprehension for the oredics
 // TODO: Add even more format forcing for the oredics
 
-const { get } = require("http");
-
 // Main function
 function main() {
   if (!globalConstants.args) {
@@ -13,53 +11,54 @@ function main() {
 }
 
 const globalConstants = {
-  version: getCurrentMinVer(),
+  version: fetchCurrentMinVer(),
   args: tag.args,
   argArr: tag.args.split(" "),
-  oredicTags: getAllOredicTags(),
+  oredicTags: fetchAllOredicTags(),
   blacklist: fetchBlacklist(),
   shorteningMap: fetchShorteningMap(),
   allTags: util.dumpTags(),
 };
 
 function determineLogic() {
-  const command = globalConstants.argArr[0];
+  const { argArr, version, oredicTags } = globalConstants;
+  const command = argArr[0];
 
-  if (command === "all" || command === "a") {
-    sendAllOredics(globalConstants.oredicTags, globalConstants.version);
-  } else if (command === "steps" || command === "s") {
-    sendAllSteps(globalConstants.getAllOredicTags, globalConstants.version);
-  } else if (command.startsWith("is_step")) {
-    sendIsAStep(globalConstants.argArr[1], globalConstants.version);
-  } else if (isExistingOredic(command, globalConstants.version)) {
-    sendOredic(command, globalConstants.version);
-  } else if (command === "help" || command === "h") {
-    sendHelpString();
-  } else if (command === "debug" || command === "d") {
-    sendDebugString();
-  } else if (command === "add") {
-    sendAddString();
-  } else if (command === "formatting") {
-    sendGoodPracticesString();
-  } else {
-    msg.reply(
-      "Invalid argument. Please use `nfu_oredic help` for more information."
-    );
+  const handlers = {
+    all: () => sendAllOredics(oredicTags, version),
+    a: () => sendAllOredics(oredicTags, version),
+    steps: () => sendAllSteps(oredicTags, version),
+    s: () => sendAllSteps(oredicTags, version),
+    help: () => sendHelpString(),
+    h: () => sendHelpString(),
+    debug: () => sendDebugString(),
+    d: () => sendDebugString(),
+    add: () => sendAddString(),
+    formatting: () => sendGoodPracticesString(),
+  };
+  if (command.startsWith("is_step")) {
+    return sendIsAStep(argArr[1], version);
   }
+  if (handlers.hasOwnProperty(command)) {
+    return handlers[command]();
+  }
+  if (isExistingOredic(command, version)) {
+    return sendOredic(command, version);
+  }
+  msg.reply(
+    "Invalid argument. Please use `nfu_oredic help` for more information."
+  );
 }
 
 // ------- Fetch/Get Logic -------
+// Get : take an input and return an output
+// Fetch : return a static value
+
 function getTagBody(tagName) {
   var tag = util.fetchTag(tagName);
   var tagBody = tag.body;
   tagBody = tagBody.replace(/`/g, "");
   return tagBody;
-}
-
-function getAllOredicTags() {
-  const validOredicTag = /^nfu_oredic_[a-z-]+_\d$/;
-  // A oredic tag must follow this format: nfu_oredic_<stepName>_<minorVerNumberNomi>
-  return util.dumpTags().filter((tag) => validOredicTag.test(tag));
 }
 
 function getOredicTag(stepName, version) {
@@ -77,16 +76,22 @@ function getAllSteps(oredics, version) {
   return output;
 }
 
-function getCurrentMinVer() {
-  return util.fetchTag("tao_storage_curr_nomi_version").body.split(".")[1];
-}
-
 function getTitleAndText(body) {
   var title = body.split("\n")[0];
   var text = body.replace(title, "");
   title = title.replace(":", "");
   text = text.replace(/\n/g, "");
   return [title, text];
+}
+
+function fetchCurrentMinVer() {
+  return util.fetchTag("tao_storage_curr_nomi_version").body.split(".")[1];
+}
+
+function fetchAllOredicTags() {
+  const validOredicTag = /^nfu_oredic_[a-z-]+_\d$/;
+  // A oredic tag must follow this format: nfu_oredic_<stepName>_<minorVerNumberNomi>
+  return util.dumpTags().filter((tag) => validOredicTag.test(tag));
 }
 
 function fetchBlacklist() {
@@ -142,6 +147,20 @@ function includesEscapeStrings(str) {
 // 5. Capitalize the first letter of the shortened oredic string
 // 6. Remove double wildcards (e.g. ore1** -> ore1*)
 // 7. Force wildcard appending again to clean up the result of the shortening
+
+function formatOredicString(oredicString) {
+  const pipeline = [
+    (string) => string.replace(/ /g, ""), // Remove spaces
+    removeDoubleGrouping,
+    forceWildcardPrepend,
+    forceWildcardAppend,
+    shortenOredic,
+    removeDoubleWildcards,
+    forceWildcardAppend, // Clean up after shortening
+  ];
+
+  return pipeline.reduce((result, fn) => fn(result), oredicString);
+}
 
 function removeDoubleGrouping(oredic) {
   return oredic.replace(/\(\(([\S\s]*?)\)\)/g, (match, capture) => {
@@ -202,23 +221,7 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function formatOredicString(oredicString) {
-  // Remove all spaces
-  let oredic = oredicString.replace(/ /g, "");
-  // Remove all double brackets
-  oredic = removeDoubleGrouping(oredic);
-  // Force wildcard formatting
-  oredic = forceWildcardPrepend(oredic);
-  oredic = forceWildcardAppend(oredic);
-  // Shorten the oredic string
-  oredic = shortenOredic(oredic);
-  // Remove double wildcards
-  oredic = removeDoubleWildcards(oredic);
-  oredic = forceWildcardAppend(oredic);
-  // (Yes it's done twice, it's to clean up the result of the shortening)
-  return str;
-}
-
+// ------- Sending Logic -------
 function formattedAnswer(body) {
   var [title, text] = getTitleAndText(body);
   const codeBlock = "```";
@@ -236,7 +239,7 @@ function formattedAnswer(body) {
   }
 }
 
-function embeddedAnswer(body) {
+function embeddedFormattedAnswer(body) {
   var [title, text] = getTitleAndText(body);
 
   switch (includesEscapeStrings(text)) {
@@ -253,7 +256,6 @@ function embeddedAnswer(body) {
   }
 }
 
-// ------- Sending Logic -------
 function sendAllOredics(version) {
   let output = "";
   for (let step of getAllSteps(globalConstants.oredicTags, version)) {
