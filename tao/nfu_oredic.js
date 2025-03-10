@@ -133,6 +133,8 @@ function includesEscapeStrings(str) {
 //   e.g. (ore1*|ore2*) -> (ore1|ore2)*
 // 4. Shorten the oredic strings using the shortening map
 // 5. Capitalize the first letter of the shortened oredic string
+// 6. Remove double wildcards (e.g. ore1** -> ore1*)
+// 7. Force wildcard appending again to clean up the result of the shortening
 
 function removeDoubleGrouping(str) {
   return str.replace(/\(\(([\S\s]*?)\)\)/g, (match, capture) => {
@@ -186,6 +188,10 @@ function shortenOredic(str) {
   return result;
 }
 
+function removeDoubleWildcards(str) {
+  return str.replace(/\*{2,}/g, "*");
+}
+
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -200,6 +206,10 @@ function formatOredicString(oredicString) {
   str = forceWildcardAppend(str);
   // Shorten the oredic string
   str = shortenOredic(str);
+  // Remove double wildcards
+  str = removeDoubleWildcards(str);
+  str = forceWildcardAppend(str);
+  // (Yes it's done twice, it's to clean up the result of the shortening)
   return str;
 }
 
@@ -335,7 +345,9 @@ function sendGoodPracticesString() {
         "  append the wildcard to the group\n" +
         "  e.g. `(ore1*|ore2*) -> (ore1|ore2)*`\n" +
         "* Shorten the oredic string using the shortening map\n" +
-        "* Capitalize the first letter of the shortened oredic string\n\n" +
+        "* Capitalize the first letter of the shortened oredic string\n" +
+        "* Remove use of double wildcards (mostly a problem with the script itself)\n" +
+        "  e.g. `ore1** -> ore1*`\n\n" +
         "**YOU DO NOT NEED TO ENFORCE THESE PRACTICES YOURSELF. THE TAG WILL DO IT FOR YOU.**",
     },
   });
