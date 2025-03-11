@@ -1,7 +1,18 @@
 // TODO: Add logic comprehension for the oredics
 // TODO: Add even more format forcing for the oredics
 
-// Main function
+const globalConstants = (() => {
+  return {
+    version: fetchCurrentMinVer(),
+    args: tag.args,
+    argArr: tag.args ? tag.args.split(" ") : [],
+    oredicTags: fetchAllOredicTags(),
+    blacklist: fetchBlacklist(),
+    shorteningMap: fetchShorteningMap(),
+    allTags: util.dumpTags(),
+  };
+})();
+
 function main() {
   if (!globalConstants.args) {
     sendAllOredics(globalConstants.oredicTags, globalConstants.version);
@@ -9,16 +20,6 @@ function main() {
   }
   determineLogic();
 }
-
-const globalConstants = {
-  version: fetchCurrentMinVer(),
-  args: tag.args,
-  argArr: tag.args.split(" "),
-  oredicTags: fetchAllOredicTags(),
-  blacklist: fetchBlacklist(),
-  shorteningMap: fetchShorteningMap(),
-  allTags: util.dumpTags(),
-};
 
 function determineLogic() {
   const { argArr, version, oredicTags } = globalConstants;
@@ -55,8 +56,8 @@ function determineLogic() {
 // Fetch : return a static value
 
 function getTagBody(tagName) {
-  var tag = util.fetchTag(tagName);
-  var tagBody = tag.body;
+  const tag = util.fetchTag(tagName);
+  const tagBody = tag.body;
   tagBody = tagBody.replace(/`/g, "");
   return tagBody;
 }
@@ -77,8 +78,8 @@ function getAllSteps(oredics, version) {
 }
 
 function getTitleAndText(body) {
-  var title = body.split("\n")[0];
-  var text = body.replace(title, "");
+  const title = body.split("\n")[0];
+  const text = body.replace(title, "");
   title = title.replace(":", "");
   text = text.replace(/\n/g, "");
   return [title, text];
@@ -223,7 +224,7 @@ function capitalize(str) {
 
 // ------- Sending Logic -------
 function formattedAnswer(body) {
-  var [title, text] = getTitleAndText(body);
+  const [title, text] = getTitleAndText(body);
   const codeBlock = "```";
 
   switch (includesEscapeStrings(text)) {
@@ -240,7 +241,7 @@ function formattedAnswer(body) {
 }
 
 function embeddedFormattedAnswer(body) {
-  var [title, text] = getTitleAndText(body);
+  const [title, text] = getTitleAndText(body);
 
   switch (includesEscapeStrings(text)) {
     case 0: // If the oredic string does not start with any escape strings
