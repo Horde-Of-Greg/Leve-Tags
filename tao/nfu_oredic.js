@@ -208,7 +208,7 @@ function shortenOredic(oredic) {
     const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     oredic = oredic.replace(
       new RegExp(escapedKey, "gi"),
-      `${capitalize(value)}*`
+      `${capitalize(value)}`
     );
   }
   return oredic;
