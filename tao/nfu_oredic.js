@@ -257,9 +257,9 @@ function embeddedFormattedAnswer(body) {
   }
 }
 
-function sendAllOredics(version) {
+function sendAllOredics(oredicTags, version) {
   let output = "";
-  for (let step of getAllSteps(globalConstants.oredicTags, version)) {
+  for (let step of getAllSteps(oredicTags, version)) {
     output += "----------------\n";
     output += formattedAnswer(getTagBody(getOredicTag(step, version))) + "\n";
   }
@@ -270,8 +270,8 @@ function sendOredic(step, version) {
   msg.reply(formattedAnswer(getTagBody(getOredicTag(step, version))));
 }
 
-function sendAllSteps(version) {
-  const steps = getAllSteps(globalConstants.oredicTags, version);
+function sendAllSteps(oredicTags, version) {
+  const steps = getAllSteps(oredicTags, version);
   const output = steps.map((step) => `* ${step} \n`);
   msg.reply({
     embed: {
