@@ -78,8 +78,8 @@ function getAllSteps(oredics, version) {
 }
 
 function getTitleAndText(body) {
-  const title = body.split("\n")[0];
-  const text = body.replace(title, "");
+  let title = body.split("\n")[0];
+  let text = body.replace(title, "");
   title = title.replace(":", "");
   text = text.replace(/\n/g, "");
   return [title, text];
