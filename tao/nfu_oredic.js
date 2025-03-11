@@ -57,7 +57,7 @@ function determineLogic() {
 
 function getTagBody(tagName) {
   const tag = util.fetchTag(tagName);
-  const tagBody = tag.body;
+  let tagBody = tag.body;
   tagBody = tagBody.replace(/`/g, "");
   return tagBody;
 }
