@@ -1,5 +1,7 @@
 // TODO: Add logic comprehension for the oredics
 // TODO: Add even more format forcing for the oredics
+// -> Force snake case using a map of words that start an oredic
+// -> Force inverse wildcard prepending due to a bug with AE2 (e.g. *(ore1|ore2) -> (*ore1|*ore2))
 
 const globalConstants = (() => {
   return {
@@ -54,6 +56,10 @@ function determineLogic() {
 // ------- Fetch/Get Logic -------
 // Get : take an input and return an output
 // Fetch : return a static value
+function parseOredictTag(tagName) {
+
+}
+
 
 function getTagBody(tagName) {
   const tag = util.fetchTag(tagName);
@@ -153,7 +159,6 @@ function formatOredicString(oredicString) {
   const pipeline = [
     (string) => string.replace(/ /g, ""), // Remove spaces
     removeDoubleGrouping,
-    forceWildcardPrepend,
     forceWildcardAppend,
     shortenOredic,
     removeDoubleWildcards,
@@ -217,6 +222,9 @@ function shortenOredic(oredic) {
 function removeDoubleWildcards(str) {
   return str.replace(/\*{2,}/g, "*");
 }
+
+function forceSnakeCase(str) {
+
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
