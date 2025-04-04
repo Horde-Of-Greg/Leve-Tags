@@ -1,4 +1,4 @@
-const length = tag.args[0];
+const length = tag.args;
 const chars =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&:/?,;.%^$€£-_°()!§@#<>*+";
 const randomChar = (chars) => {
