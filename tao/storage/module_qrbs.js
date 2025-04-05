@@ -1,4 +1,6 @@
-module.exports = function doTheThing(args) {
+module.exports = function qrbs(args) {
+  const qalc = ModuleLoader.loadModuleFromTag("module_qalc");
+
   const length = args;
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&:/?,;.%^$€£-_°()!§@#<>*+";
@@ -11,7 +13,5 @@ module.exports = function doTheThing(args) {
   for (let i = 0; i < length; i++) {
     randomString += randomChar(chars);
   }
-  util.executeTag("qalc", randomString.toString());
+  return qalc(randomString);
 };
-
-doTheThing(tag.args);
