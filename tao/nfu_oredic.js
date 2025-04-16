@@ -3,6 +3,9 @@
 // -> Force snake case using a map of words that start an oredic
 // -> Force inverse wildcard prepending due to a bug with AE2 (e.g. *(ore1|ore2) -> (*ore1|*ore2))
 
+// TODO: Add logic comprehension for the oredics
+// TODO: Add even more format forcing for the oredics
+
 const globalConstants = (() => {
   return {
     version: fetchCurrentMinVer(),
@@ -12,6 +15,7 @@ const globalConstants = (() => {
     blacklist: fetchBlacklist(),
     shorteningMap: fetchShorteningMap(),
     allTags: util.dumpTags(),
+    camelCaseMap: fetchCamelCaseMap(),
   };
 })();
 
@@ -56,10 +60,6 @@ function determineLogic() {
 // ------- Fetch/Get Logic -------
 // Get : take an input and return an output
 // Fetch : return a static value
-function parseOredictTag(tagName) {
-
-}
-
 
 function getTagBody(tagName) {
   const tag = util.fetchTag(tagName);
@@ -106,7 +106,7 @@ function fetchBlacklist() {
 }
 
 function fetchShorteningMap() {
-  const data = util.fetchTag("tao_storage_oredic_shortening_map").body;
+  const data = util.fetchTag("tao_s_odsm").body;
   const map = new Map();
   data.split("\n").forEach((line) => {
     line = line.trim();
@@ -118,6 +118,18 @@ function fetchShorteningMap() {
     (a, b) => b[0].length - a[0].length
   );
   return new Map(sortedEntries);
+}
+
+function fetchCamelCaseMap() {
+  const data = util.fetchTag("tao_s_odcmcm").body;
+  const map = new Map();
+  data.split("\n").forEach((line) => {
+    line = line.trim();
+    if (!line) return;
+    const [key, value] = line.split(",").map((s) => s.trim());
+    map.set(key, value);
+  });
+  return map;
 }
 
 // ------- Boolean/Checking logic -------
@@ -146,12 +158,12 @@ function includesEscapeStrings(str) {
 // 1. Remove all spaces
 // 2. Remove all double brackets (e.g. ((ore1|ore2)) -> (ore1|ore2)
 // 3. Force wildcard formatting
-//   i. If all alternatives in a group start with *, prepend * to the group
-//   e.g. (*ore1|*ore2) -> *(ore1|ore2)
+//   i. If a group is prepended by *, prepend * to each element the group
+//   e.g. *(ore1|ore2) -> (*ore1|*ore2)
 //   ii. If all alternatives in a group end with *, append * to the group
 //   e.g. (ore1*|ore2*) -> (ore1|ore2)*
 // 4. Shorten the oredic strings using the shortening map
-// 5. Capitalize the first letter of the shortened oredic string
+// 5. Apply correct camelcase formatting using a camelcase map
 // 6. Remove double wildcards (e.g. ore1** -> ore1*)
 // 7. Force wildcard appending again to clean up the result of the shortening
 
@@ -160,6 +172,7 @@ function formatOredicString(oredicString) {
     (string) => string.replace(/ /g, ""), // Remove spaces
     removeDoubleGrouping,
     forceWildcardAppend,
+    forceWildcardPrepend,
     shortenOredic,
     removeDoubleWildcards,
     forceWildcardAppend, // Clean up after shortening
@@ -174,16 +187,35 @@ function removeDoubleGrouping(oredic) {
   });
 }
 
-function forceWildcardPrepend(oredic) {
-  return oredic.replace(/\(([^)]+)\)/g, (match, groupContent) => {
-    const alternatives = groupContent.split("|");
-    if (alternatives.every((alt) => alt.startsWith("*"))) {
-      return (
-        "*" + "(" + alternatives.map((alt) => alt.slice(1)).join("|") + ")"
-      );
+function applyCamelCase(oredic) {
+  oredic = oredic.toLowerCase();
+  const map = globalConstants.camelCaseMap;
+  for (let [key, value] of map) {
+    if (oredic.includes(key)) {
+      const regex = new RegExp(key, "g");
+      oredic = oredic.replace(regex, value);
     }
-    return match;
+  }
+  return oredic;
+}
+
+function forceWildcardPrepend(oredic) {
+  if (!oredic.includes("*(")) {
+    return oredic;
+  }
+
+  var ores = [];
+  groups = oredic.match(/\*\([a-zA-Z0-9*|]+\)/g);
+  groups.forEach((group) => {
+    ores.push(group.match(/([a-zA-Z0-9*]+)/g));
   });
+  ores = ores.flat().filter((ore) => ore !== undefined);
+  ores = ores.filter((ore) => !/\*.+/.test(ore)).filter((ore) => ore !== "*");
+  ores.forEach((ore) => {
+    oredic = oredic.replace(ore, "*" + ore);
+  });
+  oredic = oredic.replace(/\*\(/g, "(");
+  return oredic;
 }
 
 function forceWildcardAppend(oredic) {
@@ -201,8 +233,7 @@ function forceWildcardAppend(oredic) {
 function shortenOreElement(element) {
   const map = globalConstants.shorteningMap;
   for (let [key, value] of map) {
-    if (element.toLowerCase() === key.toLowerCase())
-      return `${capitalize(value)}*`;
+    if (element.toLowerCase() === key.toLowerCase()) return `${value}*`;
   }
   return element;
 }
@@ -211,23 +242,13 @@ function shortenOredic(oredic) {
   const map = globalConstants.shorteningMap;
   for (let [key, value] of map) {
     const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    oredic = oredic.replace(
-      new RegExp(escapedKey, "gi"),
-      `${capitalize(value)}`
-    );
+    oredic = oredic.replace(new RegExp(escapedKey, "gi"), value);
   }
   return oredic;
 }
 
 function removeDoubleWildcards(str) {
   return str.replace(/\*{2,}/g, "*");
-}
-
-function forceSnakeCase(str) {
-
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // ------- Sending Logic -------
@@ -362,7 +383,7 @@ function sendGoodPracticesString() {
         "  append the wildcard to the group\n" +
         "  e.g. `(ore1*|ore2*) -> (ore1|ore2)*`\n" +
         "* Shorten the oredic string using the shortening map\n" +
-        "* Capitalize the first letter of the shortened oredic string\n" +
+        "* Capitalize the string in proper camelcase\n" +
         "* Remove use of double wildcards (mostly a problem with the script itself)\n" +
         "  e.g. `ore1** -> ore1*`\n\n" +
         "**YOU DO NOT NEED TO ENFORCE THESE PRACTICES YOURSELF. THE TAG WILL DO IT FOR YOU.**",
