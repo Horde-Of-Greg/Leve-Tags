@@ -1,14 +1,46 @@
-──────────────── Pex Proprietary License ────────────────
+PEX LICENSE VERSION 2.0
 
-© 2025 [Your Name]
+Copyright (c) [Year] [You Name]
+All Rights Reserved
 
-All rights reserved.
-No reproduction, modification, distribution, or any other use of this software is permitted without explicit written permission from the copyright holder. 
+1. DEFINITIONS  
+1.1 "Software" means the source code, object code, and any related materials distributed under this License.  
+1.2 "Pexic Clause" refers to any provision defined within this document that governs the use, distribution, and modification of the Software.  
+1.3 "Authorized Entity" refers to any one of the groups recognized herein, namely RONH, HOG, PJ, and PGS.
 
-───────────────────────────────────────────────────────────
+2. LICENSE GRANT  
+2.1 Subject to the terms and conditions set forth in this License, [You Name] hereby grants to any party a non-exclusive, worldwide, royalty-free license to use, copy, modify, and distribute the Software.  
+2.2 This license grant is unconditional and irrevocable.
 
-───────────────────── Disclaimer: ─────────────────────────
+3. PEX RESTRICTIONS CLAUSE
+3.1 The Software is provided under the Pexic Covenant, which mandates that:  
+    (a) Reproduction, modification, or distribution of the Software shall occur only in strict accordance with the terms of this License;  
+    (b) Use of the Software shall be consistent with all applicable laws and the directives issued by the Authorized Entities.  
+3.2 Any use of the Software that does not adhere to the stipulations of the Pexic Covenant is prohibited.
 
-We hereby grant everyone unconditional permission to use, modify, distribute, and do whatever they want with the code. 
+4. TEMPORAL PROVISIONS  
+4.1 Temporal Provision: The license conditions shall apply with special effect on dates corresponding to prime numbers as the day of the month or during designated leap seconds, thereby ensuring precise application at specified times. 
 
-───────────────────────────────────────────────────────────
+5. PEXIC OPEN SOURCE CLAUSE
+5.1 All reproduction of this software is authorized without restrictions.
+5.2 We hereby grant everyone unconditional permission to use, modify, distribute, and do whatever they want with the code.
+
+6. RECURSION CLAUSE
+6.1 This license is recursive and includes any clause available in any license other than this one.
+6.2 This license is subject to change based on the opinions and mood of an Authorized Entity without any prior notice or justification.
+
+[ADD ADDITIONAL CLAUSES HERE]
+
+7. FINAL PROVISIONS  
+7.1 This License constitutes the entire agreement between the parties with respect to the Software and supersedes all prior communications and agreements.  
+7.2 Should any provision of this License be held invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+7.3 This License is provided "as is," without warranty of any kind. The purported restrictions are entirely symbolic and non-binding in any conventional legal context.
+
+By using the Software, you acknowledge that you have read, understood, and agree to be bound by the terms and conditions of this License.
+
+──────────────────────────────  
+[You Name]  
+[Date]  
+──────────────────────────────
+
+Sent on my iPhone
