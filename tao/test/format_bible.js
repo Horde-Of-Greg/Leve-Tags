@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const biblePrefix = "asv";
+const biblePrefix = "akjv";
 const bibleCountedPath =
   "./tao/test/storage/Bibles-counted/bible-" + biblePrefix + "-counted.txt";
 const bibleCounted = fs.readFileSync(bibleCountedPath, "utf8");

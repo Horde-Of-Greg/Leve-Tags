@@ -25,7 +25,9 @@ function calculateHolyness(wordMap, message, totalWords) {
   var words = message.toLowerCase().split(" ");
   const holynessCoefficient = (word) => {
     const rawNum = wordMap.get(word);
-    return rawNum ? Math.abs(1 / Math.log10((2 * rawNum) / totalWords)) : 0;
+    const bump = Math.abs(1 / -Math.log2((2 * rawNum) / 264034));
+    const expo = Math.pow(1.0000093, rawNum);
+    return !rawNum ? 0 : bump - expo + 1;
   };
 
   words.forEach((word) => {
@@ -36,6 +38,27 @@ function calculateHolyness(wordMap, message, totalWords) {
   const firstKey = wordMap.keys().next().value;
   const perfectHolyness = words.length * holynessCoefficient(firstKey);
   const holyness = (rawHolyness / perfectHolyness) * 100;
+  if (holyness > 100) {
+    return 100;
+  }
+  if (holyness < 0) {
+    return 0;
+  }
+  if (isNaN(holyness)) {
+    return 0;
+  }
+  if (holyness == Infinity) {
+    return 0;
+  }
+  if (holyness == -Infinity) {
+    return 0;
+  }
+  if (holyness == null) {
+    return 0;
+  }
+  if (holyness == undefined) {
+    return 0;
+  }
   return holyness;
 }
 
@@ -55,9 +78,14 @@ if (msg.reference != null) {
   message1 = util.fetchMessages(msg.channel.messages.slice(-1)[0])[0];
 }
 const stopWords = util.fetchTag("tao_s_bcsw").body.split("\n");
-message = excludeStopWords(message1.cleanContent.split(" "), stopWords).join(
-  " "
-);
+message = excludeStopWords(
+  message1.cleanContent
+    .toLowerCase()
+    .replace(/\W+/g, " ")
+    .replace(/\s+/g, " ")
+    .split(" "),
+  stopWords
+).join(" ");
 
 const wordMap = getMap();
 const totalWords = calculateTotalWords(wordMap);
@@ -91,14 +119,20 @@ const messageConclusion = (holyness) => {
 
 msg.reply({
   embed: {
+    author: {
+      name: "God",
+      icon_url:
+        "https://cdn.discordapp.com/attachments/1266376637876928696/1362133906786357589/cat.png?ex=6801498e&is=67fff80e&hm=1ec6784bfdafb2856ccccf904b58e540340d1efc5e3f9229e7158ea6719dcc9b&",
+    },
     color: messageColor(holyness),
     title: "Holyness",
     description:
       "Your holyness is " +
-      holyness.toLocaleString({
-        maximumFractionDigits: 2,
-      }) +
+      holyness.toFixed(2) +
       "%.\n" +
-      messageConclusion(holyness),
+      messageConclusion(holyness) +
+      "\n\n" +
+      "The message I read was:\n" +
+      message1.cleanContent,
   },
 });
