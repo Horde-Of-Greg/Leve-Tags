@@ -13,6 +13,7 @@ recipe: {
     base_duration: 
     base_recipe_heat: 
     base_coil_heat: 
+    perfect_oc:
     oc_type: 
 };
 
@@ -76,6 +77,7 @@ function parse_input(input) {
       base_coil_heat: parseInt(input[4]),
       base_parallel: parseInt(input[5] ?? 0),
       amperage: parseInt(input[6] ?? 1),
+      perfect_oc: false,
       oc_type: oc_type,
     };
   } else {
@@ -88,6 +90,7 @@ function parse_input(input) {
       base_chance_bonus: parseFloat(input[3] ?? 0),
       base_parallel: parseInt(input[4] ?? 0),
       amperage: parseInt(input[5] ?? 2),
+      perfect_oc: typeof input[6] === "undefined",
       oc_type: oc_type,
     };
   }
@@ -126,9 +129,16 @@ function calculate_overclock(recipe, voltage) {
   overclock_tiers = Math.max(0, voltage - get_voltage_tier(recipe.base_eu));
 
   effective_eu = Math.floor(base_eu * Math.pow(4, overclock_tiers));
-  effective_time = Math.floor(
-    Math.max(1, recipe.base_duration / Math.pow(2, overclock_tiers)),
-  );
+
+  if (recipe.perfect_oc) {
+    effective_time = Math.floor(
+      Math.max(1, recipe.base_duration / Math.pow(4, overclock_tiers)),
+    );
+  } else {
+    effective_time = Math.floor(
+      Math.max(1, recipe.base_duration / Math.pow(2, overclock_tiers)),
+    );
+  }
 
   output.tier = voltage;
   output.eu = effective_eu;
@@ -363,4 +373,3 @@ msg.reply({
 //for (const input of test_data) {
 //  oceu(input);
 //}
-
