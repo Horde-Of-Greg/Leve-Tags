@@ -64,6 +64,7 @@ function parse_duration(input) {
 
 function parse_input(input) {
   input = input.map((value) => (value != "-" ? value : null));
+  flags = input.filter((value) => value.startsWith("--"));
   if (input.length < 2) {
     return;
   }
@@ -90,7 +91,7 @@ function parse_input(input) {
       base_chance_bonus: parseFloat(input[3] ?? 0),
       base_parallel: parseInt(input[4] ?? 0),
       amperage: parseInt(input[5] ?? 2),
-      perfect_oc: typeof input[6] === "undefined",
+      perfect_oc: flags.indexOf("--perfect-oc") == -1,
       oc_type: oc_type,
     };
   }
