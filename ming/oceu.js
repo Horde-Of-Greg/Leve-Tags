@@ -64,7 +64,7 @@ function parse_duration(input) {
 
 function parse_input(input) {
   input = input.map((value) => (value != "-" ? value : null));
-  flags = input.filter((value) => value.startsWith("--"));
+  flags = input.filter((value) => value != null && value.startsWith("--"));
   if (input.length < 2) {
     return;
   }
@@ -131,7 +131,7 @@ function calculate_overclock(recipe, voltage) {
 
   effective_eu = Math.floor(base_eu * Math.pow(4, overclock_tiers));
 
-  if (recipe.flags.include("--lcr")) {
+  if (recipe.flags.includes("--lcr")) {
     effective_time = Math.floor(
       Math.max(1, recipe.base_duration / Math.pow(4, overclock_tiers)),
     );
@@ -219,12 +219,12 @@ function generate_table(outputs, flags) {
     time_length = 0,
     tier_length = 3,
     parallel_length = 1,
-    chance_length = 0;
-  rates_length = 0;
+    chance_length = 0,
+    rates_length = 6;
 
   const needs_chance = outputs[0].chance,
     needs_parallel = outputs[0].parallel,
-    show_rates = flags.includes("--rates");
+    rates_info = flags.filter((element) => element.startsWith("--rates"));
 
   // Calculate maximum lengths for each column for padding
   outputs.forEach((row) => {
@@ -260,13 +260,28 @@ function generate_table(outputs, flags) {
       if (needs_parallel) {
         entry += generate_entry(row.parallel, "x", separator, parallel_length);
       }
-      if (show_rates) {
-        entry += generate_entry(
-          (1 / row.time).toFixed(2),
-          "/s",
-          separator,
-          rates_length,
-        );
+      if (rates_info) {
+        // Pull <amount> from `--rates:<amount>`
+        const matches = rates_info[0].match(/--rates:(\d+)/);
+        const amount = matches ? parseInt(matches[1], 10) : 1;
+
+        const rate = (1 / (row.time / 20)) * amount;
+
+        if (rate < 0.01) {
+          entry += generate_entry(
+            (rate * 60).toFixed(2),
+            "/min",
+            separator,
+            rates_length,
+          );
+        } else {
+          entry += generate_entry(
+            rate.toFixed(2),
+            "/s",
+            separator,
+            rates_length,
+          );
+        }
       }
       entry += generate_entry(get_tier_name(row.tier), "", "", tier_length);
       return entry;
@@ -347,11 +362,14 @@ msg.reply({
       "Use `-` to skip arguments \n" +
       "\n" +
       "To calculate for EBF's use:\n" +
-      "`%t oceu ebf <EU> <Duration> <Recipe Heat> <Coil Heat> {Parallel} {Amperage}`" +
+      "`%t oceu ebf <EU> <Duration> <Recipe Heat> <Coil Heat> {Parallel} {Amperage}`\n" +
       "\n" +
-      "Flags:" +
-      "--lcr: make the recipe use perfect overclock (4x speed boost per tier)" +
-      "--rates: shows the rate of production (recipe / s)",
+      "Flags\n" +
+      "`--lcr`: make the recipe use perfect overclock (4x speed)\n" +
+      "`--rates[:<amount>]`: shows the rate of production (amount / s)\n",
+    footer: {
+      text: "If this doesn't work, use %t oldceu",
+    },
   },
 });
 
