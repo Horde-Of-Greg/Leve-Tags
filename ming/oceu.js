@@ -78,7 +78,7 @@ function parse_input(input) {
       base_coil_heat: parseInt(input[4]),
       base_parallel: parseInt(input[5] ?? 0),
       amperage: parseInt(input[6] ?? 1),
-      perfect_oc: false,
+      flags: flags,
       oc_type: oc_type,
     };
   } else {
@@ -91,7 +91,7 @@ function parse_input(input) {
       base_chance_bonus: parseFloat(input[3] ?? 0),
       base_parallel: parseInt(input[4] ?? 0),
       amperage: parseInt(input[5] ?? 2),
-      perfect_oc: flags.indexOf("--perfect-oc") == -1,
+      flags: flags,
       oc_type: oc_type,
     };
   }
@@ -131,7 +131,7 @@ function calculate_overclock(recipe, voltage) {
 
   effective_eu = Math.floor(base_eu * Math.pow(4, overclock_tiers));
 
-  if (recipe.perfect_oc) {
+  if (recipe.flags.include("--lcr")) {
     effective_time = Math.floor(
       Math.max(1, recipe.base_duration / Math.pow(4, overclock_tiers)),
     );
@@ -213,16 +213,18 @@ function calculate_ebf_overclock(recipe, voltage) {
   return output;
 }
 
-function generate_table(outputs) {
+function generate_table(outputs, flags) {
   // Initialize lengths for each column
   let eu_length = 7,
     time_length = 0,
     tier_length = 3,
     parallel_length = 1,
     chance_length = 0;
+  rates_length = 0;
 
   const needs_chance = outputs[0].chance,
-    needs_parallel = outputs[0].parallel;
+    needs_parallel = outputs[0].parallel,
+    show_rates = flags.includes("--rates");
 
   // Calculate maximum lengths for each column for padding
   outputs.forEach((row) => {
@@ -257,6 +259,14 @@ function generate_table(outputs) {
       }
       if (needs_parallel) {
         entry += generate_entry(row.parallel, "x", separator, parallel_length);
+      }
+      if (show_rates) {
+        entry += generate_entry(
+          (1 / row.time).toFixed(2),
+          "/s",
+          separator,
+          rates_length,
+        );
       }
       entry += generate_entry(get_tier_name(row.tier), "", "", tier_length);
       return entry;
@@ -316,7 +326,7 @@ function generate_entry(value, unit_suffix, separator, length) {
   msg.reply({
     embed: {
       title: `Input: ${recipe.base_eu} EU/t for ${recipe.base_duration / 20} sec.`,
-      description: `\`\`\`${generate_table(output)}\`\`\``,
+      description: `\`\`\`${generate_table(output, recipe.flags)}\`\`\``,
       footer: {
         text: footer,
       },
@@ -337,7 +347,11 @@ msg.reply({
       "Use `-` to skip arguments \n" +
       "\n" +
       "To calculate for EBF's use:\n" +
-      "`%t oceu ebf <EU> <Duration> <Recipe Heat> <Coil Heat> {Parallel} {Amperage}`",
+      "`%t oceu ebf <EU> <Duration> <Recipe Heat> <Coil Heat> {Parallel} {Amperage}`" +
+      "\n" +
+      "Flags:" +
+      "--lcr: make the recipe use perfect overclock (4x speed boost per tier)" +
+      "--rates: shows the rate of production (recipe / s)",
   },
 });
 
