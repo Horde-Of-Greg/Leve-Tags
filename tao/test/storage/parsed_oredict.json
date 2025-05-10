@@ -1,0 +1,20 @@
+{
+  "type": "operator",
+  "operator": "AND",
+  "children": [
+    {
+      "type": "operator",
+      "operator": "OR",
+      "children": [
+        {
+          "type": "token",
+          "token": "(Aluminum|Magnesium)&(Copper|Zinc))|! (Tin"
+        },
+        {
+          "type": "token",
+          "token": "Lead"
+        }
+      ]
+    }
+  ]
+}
