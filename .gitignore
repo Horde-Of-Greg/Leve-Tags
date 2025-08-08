@@ -84,3 +84,6 @@ logs/
 
 # Mac
 .DS_Store
+
+# Raw Dump
+GH-Importer/tags.json
