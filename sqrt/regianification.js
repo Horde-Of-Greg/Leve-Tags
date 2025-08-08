@@ -1,3 +1,4 @@
+
 // thank you https://stackoverflow.com/a/7616484
 String.prototype.hashCode = function() {
   var hash = 0,

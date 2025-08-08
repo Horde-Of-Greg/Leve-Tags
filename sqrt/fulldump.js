@@ -1,3 +1,4 @@
+
 "use strict";
 
 const options = {
@@ -106,3 +107,4 @@ function fullDump(search, options = {}) {
         }
     });
 })();
+

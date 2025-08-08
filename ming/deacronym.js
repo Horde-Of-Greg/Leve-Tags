@@ -1,3 +1,23 @@
+
+const banned_tags = [
+  "cba",
+  "p_x",
+  "p3x",
+  "pex",
+  "brainrot",
+  "iykyk",
+  "btw",
+  "wts",
+  "smh",
+  "log",
+  "sheep",
+  "cbt",
+  "ifg",
+  "aa",
+  "htaistimsahbtcawfrbbeslop",
+  "adhpoaolqquvluvzpm",
+];
+
 ((_) => {
   if (!tag.args) {
     msg.reply("\`\`\`Usage: %t deacronym <acronym> / list.\`\`\`");
@@ -28,6 +48,13 @@
 
   let description = [];
   for (const acronym of acronyms) {
+    if (banned_tags.includes(acronym)) {
+      msg.reply(
+        `\`\`\`This message contains content that are blocked on this server, the local authorities will be notified of this occasion.\`\`\``,
+      );
+      return;
+    }
+
     try {
       const output = util.executeTag("acronym_" + acronym);
       description.push(`${acronym.toUpperCase()}: ${output}`);

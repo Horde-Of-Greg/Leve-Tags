@@ -1,4 +1,3 @@
-"use strict";
 
 const excludedNames = [/^ck_/],
     excludedUsers = [];
@@ -109,3 +108,4 @@ if (!query) {
         });
     }
 }
+

@@ -1,3 +1,4 @@
+
 function susfunc(a, b) {
     return sus.includes(a.toLowerCase()) || sus.includes(b.toLowerCase());
 }

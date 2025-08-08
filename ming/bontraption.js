@@ -1,3 +1,4 @@
+
 function execute_tag(name) {
     //Executes the given tag, and return the results.
     //Input: String
@@ -145,3 +146,4 @@ function get_option(input) {
     //we fetch the tag name incase this isn't called by %t contraption
     return `\`:warning: Invalid arguments.\n Usage: %t ${tag_name} [<number>/random <number>/list/count/next/latest]\``;
 })();
+

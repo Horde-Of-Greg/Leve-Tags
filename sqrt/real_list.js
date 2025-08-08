@@ -1,3 +1,4 @@
+
 const tags = util.dumpTags().filter(name => !name.startsWith("ck_")).filter(name => {
     try {
         return util.fetchTag(name).owner === msg.authorId;
@@ -12,3 +13,4 @@ msg.reply({
         data: tags.map((name, i) => `${i + 1}. ${name}`).join("\n")
     }
 });
+

@@ -1,3 +1,4 @@
+
 function splitArgs(str, sep = " ") {
     const ind = str.indexOf(sep);
 
@@ -27,3 +28,4 @@ if (typeof tag.args === "undefined" || tag.args.length < 1) {
         util.executeTag(name, args + e_args);
     }
 }
+

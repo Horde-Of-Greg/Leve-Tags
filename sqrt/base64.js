@@ -1,3 +1,4 @@
+
 "use strict";
 
 class CustomError extends Error {
@@ -359,3 +360,4 @@ switch (option) {
 }
 
 out;
+

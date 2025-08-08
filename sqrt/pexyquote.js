@@ -1,9 +1,14 @@
+
 // User sources : 1 - args, 2 - msg ping / reply, 3 - last message author in channel
 // Second arg and after override the text being said
 if (!util.findUsers) util.findUsers = ignored => [msg.author];
 
 var user = undefined;
-var text = util.executeTag("voices", "10").replace(/(\w)\w+/g, "$1ex");
+
+const exes = "abcdefghijklmnopqrstuvwxyz".split("").map(x => x + "ex").join(",");
+const count = 10 + Math.floor(Math.random() * 15);
+var text = util.executeTag("voices", `${count} {${exes}} 3`);
+
 if (tag && tag.args) {
   var args = tag.args.split(' ');
   let users = util.findUsers(args[0]);

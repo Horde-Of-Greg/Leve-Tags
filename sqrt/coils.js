@@ -1,3 +1,4 @@
+
 const a = `Smelting with the ferocity of the universe itself. This unbelievable material seemed impossible to manipulate into a coil block form, even though its properties made this desirable. It is incredibly stable even at extreme temperatures, but this also made it unable to pack together for coils. However, the situation changed when you thought about using something more intelligent. By integrating a Wetware or better UHV circuit, the Infinity Coil became a reality, controlled by the ever-watching eyes of the circuitry you've spent months to create. From now on, these eyes will watch over your multiblocks.
 
 Forged from the blood of an ageless dragon, and melded together by the power of fusion beyond what you thought was the reality. No natural element, or combination of elements could match up to this glowing orange material, not even the Awakened Draconium you got your hands on before. What truly happened inside that Mk4 Fusion Reactor? What *is* this material? Its dust pulsates visibly, at different rates depending on the size of the dust itself. Hypogen approaches a state of complete balance as it approaches the block size, and it is obvious to you what needs to be done with it. It absorbs and radiates energy without any effort, but it would be stupid to attempt making coils out of this without assistance. Wetware wasn't good anymore, and only the most advanced living circuit could withstand the erratic behavior Hypogen has.
@@ -37,3 +38,4 @@ cupronickel coil block quest:  "Blood roils through your veins as the harsh word
         }
     });
 })();
+

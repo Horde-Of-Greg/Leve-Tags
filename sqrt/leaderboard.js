@@ -1,7 +1,8 @@
+
 "use strict";
 
 const options = {
-    excludedNames: [/^ck_/],
+    excludedNames: [/^ck_/, /^tao_s_/, /^mein_map-/],
     excludedUsers: []
 };
 
@@ -11,19 +12,16 @@ function fullDump(search, options = {}) {
     const excludedNames = options.excludedNames ?? [],
         excludedUsers = options.excludedUsers ?? [];
 
-    let all = search ? util.dumpTags().filter(t => t.includes(search)) : util.dumpTags();
-
     const enableNameBlacklist = excludedNames.length > 0,
         enableUserBlacklist = excludedUsers.length > 0;
+
+    let all = search ? util.dumpTags().filter(t => t.includes(search)) : util.dumpTags();
 
     if (enableNameBlacklist) {
         all = all.filter(name =>
             excludedNames.every(bl => {
-                if (bl instanceof RegExp) {
-                    return !bl.test(name);
-                }
-
-                return bl !== name;
+                if (bl instanceof RegExp) return !bl.test(name);
+                else return bl !== name;
             })
         );
     }
@@ -37,10 +35,7 @@ function fullDump(search, options = {}) {
 
         if (tag !== null && typeof tag !== "undefined") {
             const userExcluded = enableUserBlacklist && excludedUsers.includes(tag.owner);
-
-            if (!userExcluded) {
-                tags.push(tag);
-            }
+            if (!userExcluded) tags.push(tag);
         }
 
         return tags;
@@ -107,3 +102,4 @@ function genLeaderboard(type, limit) {
         }
     });
 })();
+

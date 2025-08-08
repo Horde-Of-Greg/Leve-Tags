@@ -1,5 +1,6 @@
-if (/^(.?ex\s?)+$/.test(tag.args)) {
-    ("👍 pex");
+
+if(/^(.?ex\s?)+$/.test(tag.args)) {
+    "👍 pex";
 } else {
-    ("❌ NOT GEX...");
+    "❌ NOT GEX...";
 }

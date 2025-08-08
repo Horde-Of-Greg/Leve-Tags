@@ -1,3 +1,4 @@
+
 (() => { 
 if (tag.args == undefined) return "Invalid amount of arguments!"
 

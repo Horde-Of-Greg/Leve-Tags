@@ -1,5 +1,5 @@
-module.exports = function doTheThing(args) {
-  const length = args;
+
+  const length = tag.args;
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&:/?,;.%^$€£-_°()!§@#<>*+";
   const randomChar = (chars) => {
@@ -12,6 +12,3 @@ module.exports = function doTheThing(args) {
     randomString += randomChar(chars);
   }
   util.executeTag("qalc", randomString.toString());
-};
-
-doTheThing(tag.args);
