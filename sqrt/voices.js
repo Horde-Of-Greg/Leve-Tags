@@ -1,3 +1,4 @@
+
 "use strict";
 
 function randomWord(dict) {
@@ -139,3 +140,4 @@ function parseBool(str) {
 
     return generateText(dict, len, usePunct, period);
 })();
+

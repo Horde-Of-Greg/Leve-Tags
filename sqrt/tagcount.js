@@ -1,3 +1,4 @@
+
 "use strict";
 
 const options = {
@@ -74,3 +75,4 @@ function fullDump(search, options = {}) {
         return `:information_source: <@${user.id}> has **${tags.length}** tags.`;
     }
 })();
+

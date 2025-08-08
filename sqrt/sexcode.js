@@ -1,3 +1,4 @@
+
 function encode(str) {
     const last = BigInt(str.length * 8);
 
@@ -125,3 +126,4 @@ Decode: %t sexcode -d (hungarian number)`;
 }
 
 out;
+

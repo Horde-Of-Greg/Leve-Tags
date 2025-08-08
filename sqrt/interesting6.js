@@ -1,3 +1,4 @@
+
 const data = http.request({
     url: "https://files.catbox.moe/hgnrsx.mp3",
     responseType: "arraybuffer"
@@ -9,3 +10,4 @@ msg.reply("earrape", {
         data: data
     }
 });
+

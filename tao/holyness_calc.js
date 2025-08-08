@@ -1,3 +1,4 @@
+
 if (!util.findUsers) util.findUsers = (ignored) => [msg.author];
 
 function getMap() {
@@ -180,3 +181,4 @@ msg.reply({
       message1.cleanContent,
   },
 });
+

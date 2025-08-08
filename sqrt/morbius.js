@@ -1,3 +1,4 @@
+
 const data = http.request({
     url: "https://i.ibb.co/1dMWtyM/gtnh.png",
     responseType: "arraybuffer"
@@ -12,3 +13,4 @@ msg.reply(
         }
     }
 );
+

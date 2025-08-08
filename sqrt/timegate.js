@@ -1,3 +1,4 @@
+
 const sgHours = 5500,
       fac = sgHours * 3600000;
 
@@ -19,4 +20,5 @@ const sgHours = 5500,
 
     return `ℹ️ ${((new Date().getTime() - 980985600000) / fac).toFixed(2)} Stargates have passed since 01-01-2001.`;
 })();
+
 

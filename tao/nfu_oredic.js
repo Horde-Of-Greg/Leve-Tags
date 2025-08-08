@@ -1,3 +1,4 @@
+
 // TODO: Add logic comprehension for the oredics
 // TODO: Add even more format forcing for the oredics
 // -> Force snake case using a map of words that start an oredic
@@ -42,6 +43,7 @@ function determineLogic() {
     d: () => sendDebugString(),
     add: () => sendAddString(),
     formatting: () => sendGoodPracticesString(),
+    apply: () => sendApplyFormatting(),
   };
   if (command.startsWith("is_step")) {
     return sendIsAStep(argArr[1], version);
@@ -132,6 +134,22 @@ function fetchCamelCaseMap() {
   return map;
 }
 
+function fetchStringToApply() {
+  const args = tag.args.replace(/`/g, "").split(" ");
+  if (args.length === 1) {
+    msg.reply("Please provide an oredic string to apply the formatting to.");
+  }
+  const stringsToApply = args.slice(1);
+  stringsToApply.forEach((arg) => {
+    if (!arg.match(/^[a-zA-Z0-9*|()^&!]+$/)) {
+      msg.reply(
+        `Invalid string: \`${arg}\`. Only alphanumeric characters \`*, |, !, ^, (, and )\` are allowed.`
+      );
+    }
+  });
+  return stringsToApply;
+}
+
 // ------- Boolean/Checking logic -------
 function isExistingOredic(stepName, version) {
   if (getAllSteps(globalConstants.oredicTags, version).includes(stepName)) {
@@ -175,6 +193,7 @@ function formatOredicString(oredicString) {
     forceWildcardPrepend,
     shortenOredic,
     removeDoubleWildcards,
+    forceNoEmptyGrouping,
     forceWildcardAppend, // Clean up after shortening
   ];
 
@@ -236,6 +255,17 @@ function shortenOreElement(element) {
     if (element.toLowerCase() === key.toLowerCase()) return `${value}*`;
   }
   return element;
+}
+
+function forceNoEmptyGrouping(oredic) {
+  if (
+    oredic.match(/[a-z0-9*!^|]*\(.+\)[*]*/i) &&
+    !oredic.match(/.*&[!]?\(.+\)[*]?/i)
+  ) {
+    return "*&" + oredic;
+  } else {
+    return oredic;
+  }
 }
 
 function shortenOredic(oredic) {
@@ -346,6 +376,16 @@ function sendAddString() {
   });
 }
 
+function sendApplyFormatting() {
+  const stringsToApply = fetchStringToApply();
+  const formattedStrings = stringsToApply.map((str) => formatOredicString(str));
+  let output = "## Formatted strings:\n";
+  formattedStrings.forEach((string, index) => {
+    output += `### Formatted string ${index + 1}:\n\`\`\`${string}\`\`\`\n\n`;
+  });
+  msg.reply(output);
+}
+
 function sendHelpString() {
   msg.reply({
     embed: {
@@ -360,7 +400,8 @@ function sendHelpString() {
             "* `<step>`: returns the oredic for the given step\n" +
             "* `is_step <step>`: returns whether the step exists\n" +
             "* `add` : explains how to add a new oredic\n" +
-            "* `formatting` : explains the formatting enforced by this tag",
+            "* `formatting` : explains the formatting enforced by this tag\n" +
+            "* `apply <oredic>` : applies the formatting to the given oredic\n accepts multiple oredics\n",
         },
       ],
     },
@@ -413,3 +454,4 @@ function sendDebugString() {
 }
 
 main();
+

@@ -1,3 +1,4 @@
+
 // This script calculates which rolls a user can get by running kriii and the probabilities of each roll.
 let specialProbabilities = {
   god: 0.05,
@@ -78,12 +79,20 @@ let specialLists = {
   ],
 };
 
+author = msg.author.id;
+args = tag.args.split(/ /g);
+if (tag.args && args.length === 1 && tag.args.match(/^\d{18}$/)) {
+  author = tag.args;
+} else if (tag.args) {
+  msg.reply(`Error: Invalid arg\nPlease provide a single, valid user ID.`);
+}
+
 // Find the user's lists
 var userLists = {};
 
 function findUserLists(listType) {
   for (const listName in listType) {
-    if (listType[listName].includes(msg.author.id)) {
+    if (listType[listName].includes(author)) {
       userLists[listName] = true;
     } else {
       userLists[listName] = false;
@@ -161,3 +170,5 @@ for (const probability in storedProbabilities) {
 message += "\n Basic Blue Kriii (" + roundToFour(remainder * 100) + "%)";
 
 msg.reply(message);
+
+

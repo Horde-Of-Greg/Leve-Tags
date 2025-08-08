@@ -1,3 +1,4 @@
+
 "use strict";
 
 const og = "https://cdn.discordapp.com/attachments/1165208683559522434/1168510251859980298/1698664944839.png";
@@ -408,3 +409,4 @@ function getOption(input) {
 
     return ":warning: Invalid arguments.\n" + usage;
 })();
+
