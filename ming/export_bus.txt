@@ -1,0 +1,1 @@
+export items from your ME system to a storage, causes large amount of lag when overused, use GT covers / item conduits for item transport instead.

@@ -1,0 +1,4 @@
+- **GT Battery Buffers**: Cheap to make, but limited in capacity and throughput.
+- **EnderIO capacitor Banks**: Available as early as LV, and can be upgraded to their vibrant variant,  storage capacity and throughput falls off after EV.
+- **Power Substation**: EU power storage starting in IV, supports up to **18 layers or capacitors**, can be upgraded to store immense amount of power in the late game.
+- **Draconic Ball**: Draconic Evolution's solution to large power storage, tier 7 can store ~2 trillion rf, tier 8 allows for basically infinite power storage for large amounts of awaken draconium.

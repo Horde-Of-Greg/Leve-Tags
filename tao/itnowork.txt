@@ -1,0 +1,34 @@
+There's no need to start looking for imaginary problems, this is what it could be listed by how likely they are to be the problem :
+
+__Recipe not going__
+1. No energy
+2. Incorrect inputs (aka wrong items. Common issue : The soldering alloy needs antimony)
+3. The recipe needs to be run inside of a cleanroom multiblock
+4. Wrong tier of energy (LV, MV, LuV, etc.)
+5. The Outputs of your mulitblock are full
+6. Coils aren't hot enough (only for EBF/ABS/RHF)
+7. Outputs aren’t big enough (common issue : liquid air distillation)
+8. If it’s a GCYM, you need to switch its mode with a button inside the GUI 
+9. It's in distinct bus mode and you're using two different buses
+10. No maintenance hatch/maintenance not done
+11. Muffler blocked by another block
+12. It’s a bug with a known workaround
+13. It’s a bug without a workaround (**very** unlikely)
+
+Check up to 11. yourself before asking for more support. If it still doesn't work after checking all that, there's a good chance it's a bug
+
+__Multiblock not forming__
+1. You simply built it wrong overall, the shape isn't good, blocks are missing, etc.
+2. You forgot an essential part of it (muffler, maintenance hatch, ...)
+3. You forgot to place a block somewhere inside (check layer by layer in JEI preview)
+4. You put inputs instead of outputs or vice-versa
+5. The controller is not in the right place
+6. You put too many energy hatches (check JEI preview for how many are allowed, usually 2 for normal multiblocks and 3 for GCYMs)
+7. The energy hatches are not high voltage enough (only applies for specific cases like fusion reactor or Network Switch)
+8. Cleanroom specific :
+ - You have too many doors (the JEI preview tells you 8 but it's 4, cause each door is 2 blocks)
+ - You have a "smoke producing machine" inside, like a turbine or a multiblock with a muffler
+ - You placed plascrete inside of the cleanroom
+9. It's bugged (**very** unlikely)
+
+Check up to 8. yourself before asking for more support. If it still doesn't work after checking all that, there's a good chance it's a bug

@@ -1,0 +1,1 @@
+Import items to your ME system, **causes large amount of lag when overused**, use GT covers / item conduits for item transport instead.

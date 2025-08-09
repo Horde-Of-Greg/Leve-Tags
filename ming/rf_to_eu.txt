@@ -1,0 +1,2 @@
+(NFu only) use a convertor corresponding to your voltage tier (e.g. a 4A LV convertor), hook it up to RF power with power conduits, plug power wires on the output face, profit.
+(Nomi CE only) Use the corresponding CEF instead.

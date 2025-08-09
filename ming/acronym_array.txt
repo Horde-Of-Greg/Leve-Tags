@@ -1,0 +1,1 @@
+Array mining is a special mining technique that allows you to mine a bunch of blocks easily. %t array_mining

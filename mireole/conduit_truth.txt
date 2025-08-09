@@ -1,0 +1,10 @@
+Why conduits suck:
+- Ugly
+- Really bad for tps at large scales
+- Destroy your fps for no reason (only thing worse for fps is conduit faÃ§ades)
+- ME conduits are very glitchy, disconnect from ae2 blocks for no reason and can't connect to ae2 parts (what you should be doing most of the time)
+- Very limited throughput, even with max upgrades
+- GT pipes and ae2 exist
+- Upgrades suck
+- Shitty UI
+- Spaghetti

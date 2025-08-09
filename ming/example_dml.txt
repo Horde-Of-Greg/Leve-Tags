@@ -1,0 +1,6 @@
+An example DML setup that is: 
+- Easy to setup
+- 1 wide tileable 
+- Infinitely expandable*
+(Note: you should have a controller slave at each slice, forgot that in the ss)
+https://imgur.com/p5sQIn4 https://imgur.com/s6QK13s https://imgur.com/wXRKS5V

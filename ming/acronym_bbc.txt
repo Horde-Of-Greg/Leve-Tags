@@ -1,0 +1,1 @@
+Bulk Blast Chiller, multiblock version of the vaccum freezer.

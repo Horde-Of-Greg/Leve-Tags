@@ -1,0 +1,4 @@
+**NFu Hard Mode** exclusive fluid, used to make elemental dusts. Can be made from:
+- Pulsating dust + Hydrofluoric acid 
+- Pulsating dust + Fluoroantimonic acid (higher yields per dust if that is available)
+- Calcium + Copper + Ender Pearl + Hydrofluoric acid / Fluoroantimonic acid (Better recipe, **1.7.4+ only**)

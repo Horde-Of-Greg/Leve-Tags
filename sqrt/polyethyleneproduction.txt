@@ -1,0 +1,1 @@
+Hello, I'm having issues setting up Polyethylene production because I can't remove the byproduct from the chemical reactor. For some reason, the reactor won't export it's diluted sulfuric acid either directly into a distillery, or into an EnderIO fluid pipe. Using a pump cover with or without a whitelist for the diluted SA doesn't work either.

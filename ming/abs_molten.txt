@@ -1,0 +1,7 @@
+The ABS produce both liquid metals, and molten metals. There is **no simple filter** to filter molten metal. So you will need this setup:
+
+ABS output -> iface of subnet 1 
+subnet 1 storage bus 1 (use multiple capacity cards, fill it with all molten metals) -> p2p -> freezer
+subnet 1 storage bus 2 (no filter, low priority) -> p2p -> fluid solidifier
+
+Note: to make patterns for this setup, set the output to **solid ingots** and the amount corresponding to the amount of molten metal (press shift while hovering to see)

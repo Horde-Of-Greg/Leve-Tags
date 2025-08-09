@@ -1,0 +1,5 @@
+```
+msg.reply("> Access the input hatch with ender link covers.", {embed: {image: {url: `
+https://media.discordapp.net/attachments/1267523803706294315/1287386326882189312/Untitled_Diagram.drawio.png?ex=66f15b72&is=66f009f2&hm=2252bfe199cd0a1a3b39d479d7ed050c000e3638b1ea792691b7ac2349e33e71&=&format=webp&quality=lossless&width=1244&height=1242%22%22
+`}}})
+```

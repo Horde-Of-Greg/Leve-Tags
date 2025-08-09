@@ -1,0 +1,1 @@
+**EnderIO Crafting Station** Uses large amounts of axes and hoes, use automate them, simply use **Crafting Stations** and **Cobble Generators** to make stone axes / hoes automatically. Alternatively, use **Diamonds** from **Deep Mob Learning** to make yours tools, you already have a large stockpile from powering numis anyways.

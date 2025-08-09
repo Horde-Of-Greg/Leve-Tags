@@ -1,0 +1,14 @@
+There are many ways to move items and fluids in Nomifactory:
+
+**Items**
+- GT Conveyor modules / Robot arm 
+- EIO item conduits
+- AE2 interfaces
+- AA Item lasers
+- Item P2P
+
+**Fluids**
+- GT Pump
+- EIO conduits
+- Fluid interface
+- Fluid P2P

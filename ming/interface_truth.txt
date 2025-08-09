@@ -1,0 +1,5 @@
+```Welcome to the elite, prepare for the scorn of the drooling masses.
+
+I don’t use interfaces. They’re a scam. Interfaces are the most useless thing in the language. I mostly just do straight classes. If I really need to override something I use virtual. Interfaces are only needed if the code literally won’t compile without them due to the assembly dependency tree. However, Delegates and action/func exist if you really need to invert the literal compilation order. Interfaces truly have no place. They are pure boilerplate for the purpose of ceremony itself.
+
+Edit: scorn achieved. Your hatred fuels my righteous sense of superiority.```

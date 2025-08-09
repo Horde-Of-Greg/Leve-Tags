@@ -1,0 +1,1 @@
+This is deacronym, a community maintained list of acronyms, do %t da <acronym> to retrieve any acronym and %t add acronym_<acronym> to add any acronym

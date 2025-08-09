@@ -1,0 +1,46 @@
+Early Game (HV):
+You would need a rudimentary oreproc setup by the time you get to HV to
+get chrome and other stuff. Have a macerator (HV for byproducts) -> washers & chemical baths 
+(only really useful in hm) -> thermal centrifuge -> macerator setup, then use
+conduits / pipes to route the outputs of one to another, for byproducts, you would
+want to setup high priority oredict filters that linked to the machines, then low
+priority filters that links to some sort of storage (cells / crates).
+
+For the oredict filters, use:
+Macerators: ore*
+Washers: crushed*
+Thermal centrifuges: crushedPurified*
+2nd Macerators: crushedCentrifuged*
+
+
+Mid game (after GCYM):
+Firstly, you will probably want to setup a dedicated subnet for ore processing b
+y using a quartz fiber to separate out the subnet stuff (also use drives to 
+store the dusts and a storage bus (extract only) pointing to a subnet interface) 
+to let main net see everything on subnet).
+
+You would also want to isolate some ores out of oreproc for platline / indium:
+Mixer (indium)
+*ied*&(*G*a|*Sph*)
+
+Platline (Chemical Reactor):
+*ied*&(*C*yrite|*Coo*|*Te*|*Bo*te|*ocite|*ndite)
+
+
+For the oredict filters, use:
+Washers: *shed*&!(*N*l|*Pl*m|*C*yrite|*Coo*|*Al*m|*xite|*C*t|*ltite|*Mal*|*ladite|*Sph*|*St*te|*Te*|*Tin|*Ye*)&!*ied*&!*ged*
+
+Chemical Bath (Sodium Persulfate):
+*shed*&(*Al*m|*xite|*C*t|*ltite|*Mal*|*ladite|*Sph*|*St*te|*Te*|*Tin|*Ye*)&!*ied*&!*ged*
+
+Chemical Bath (Mercury):
+*shed*&(*N*l|*Pl*m|*C*yrite|*Coo*)&!*ied*&!*ged*
+
+Thermal Centrifuge:
+*ied*&!(*Ci*|*tRed|*ow|*Laz*|*pe|*Lau*|*E*d|*R*ar|*Coal|*N*z|*S*t|*Q*te|*Blue*T*z|*R*lt|*Mon*|*Green*S*re|*D*d|*C*z|*Mal*|T*z|*is|*O*l|*So*ite|*A*t|*A*ne|*Ol*|*Spe*|*Ap*|S*re|*by|*lar|*Dul*|*G*a|*Sph*|*C*yrite|*Coo*|*Te*|*Bo*te|*ocite|*ndite)
+
+Sifter: (Very optional but gives extra gems)
+*ied*&(*Ci*|*tRed|*ow|*Laz*|*pe|*Lau*|*E*d|*R*ar|*Coal|*N*z|*S*t|*Q*te|*Blue*T*z|*R*lt|*Mon*|*Green*S*re|*D*d|*C*z|*Mal*|T*z|*is|*O*l|*So*ite|*A*t|*A*ne|*Ol*|*Spe*|*Ap*|S*re|*by|*lar|*Dul*)&!(*G*a|*Sph*|*C*yrite|*Coo*|*Te*|*Bo*te|*ocite|*ndite)
+
+Centrifuge:
+d*t*&(*R*h|*R*ar|*Tr*te|*Ci*|*St*te|*Pi*|*O*0|*I*0)|*tPure*

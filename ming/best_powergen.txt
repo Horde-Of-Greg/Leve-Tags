@@ -1,0 +1,4 @@
+> How much energy would burning a human body provide? 
+In terms of energy, there's no real difference between burning something and metabolizing it.
+
+A body is maybe 150 lbs, but 2/3 of that is water, so 50 pounds of dry mass. Fat gives some 3500 Calories a pound and proteins more like 1600 or something. Take 2000 on average. That's 100,000 Calories, or about 500 megajoules, or a bit more than a hundred kilowatt hours. At ten cents a kilowatt hour, the energy in your body is worth ten dollars.

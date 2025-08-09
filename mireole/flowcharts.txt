@@ -1,0 +1,6 @@
+# Why you shouldn't always rely on flowcharts
+- They make things look more complicated than they really are
+- It's easy to get confused somewhere in the chart or to miss one connection
+- They're often out of date of for another version pack / mode, especially if you got them from a random leveret tag 
+
+Instead, try looking at the recipes involed in JEI. Bookmark the recipes involved in whatever chain you're trying to make and proceed in small steps. With the help of AE2, you can automate one part of it, then automate another, etc. until you have everything setup correctly

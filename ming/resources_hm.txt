@@ -1,0 +1,7 @@
+Although **CEu Hard Mode** doesn't have DML for infinite resources, there are still many ways to get some raw material infinitely: (You won't need most of this after HV after you setup a robust oreproc)
+
+- Electrolyze **Clay dust from Diorite** for aluminium, silicon, lithium, sodium, and small amounts of sulfur
+- Electrolyze **Obsidian Dust** for Iron
+- Farm **Ender Pearls** from EIO farming station
+- ERF for thermal powders
+- **Saltpeter** from Diorite

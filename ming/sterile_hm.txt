@@ -1,0 +1,3 @@
+(NFu Hard mode only)
+ **Sterile Cleanroom** now requires tritanium to make, use **Europium** from fusion to farm crystal chips for now.
+Note that no **Muffler Hatches** are allowed in cleanroom , so you will have to use **Processing Arrays** for Brewery and Distillery.

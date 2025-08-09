@@ -1,0 +1,1 @@
+Crafting Input Bus, an input bus that allows for direct pattern insertion (currently not in nomifactory).

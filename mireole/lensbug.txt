@@ -1,0 +1,3 @@
+In Nomifactory CEu v1.7-alpha-4, gem lenses (the ones that aren't made from dyeing a glass lens) can sometimes be broken and not appear / not work for wafers recipes.
+The only known fix is to restart your game, which doesn't work every time.
+**Fixed in 1.7b5** (%t updatepack)

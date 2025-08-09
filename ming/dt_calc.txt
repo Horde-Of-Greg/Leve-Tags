@@ -1,0 +1,6 @@
+```
+if (!tag.args){msg.reply("Usage: %t dt_calc <height>")};
+const height = parseInt(tag.args);
+if (height < 3){msg.reply("Too short!")};
+msg.reply(`\`\`\`Casing Needed: ${21+7*(height-3)}\nStainless steel needed: ${(21+7*(height-3))*8}\`\`\``);
+```

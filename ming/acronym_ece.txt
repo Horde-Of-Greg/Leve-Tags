@@ -1,0 +1,1 @@
+Extreme Combustion Engine, IV multiblock for generating up to 4A IV power with combustion fuels, (requires liquid oxygen to fuel and iridium for dynamo hatch)

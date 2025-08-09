@@ -1,0 +1,1 @@
+One of the first tech mods for Minecraft that was actually polished. GregTech is actually originally just a fork of IC2. Some features stay unique to it like crops.

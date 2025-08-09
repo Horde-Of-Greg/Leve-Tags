@@ -1,0 +1,12 @@
+octofreezer : ``` 
+OFFFO  ICFCI  FFFFF  OCFCO  IFFFI
+EFFFE  EFFFE  FFFFF  EFFFE  EFFFE
+FFFFF  FFFFF  FFFFF  FFFFF  FFFFF
+EFFFE  EFFFE  FFFFF  EFFFE  EFFFE
+OFFFO  ICFCI  FFFFF  OCFCO  IFFFI
+
+F = frost proof casing
+E = energy input hatch
+C = controller
+I = input bus
+O = output bus```

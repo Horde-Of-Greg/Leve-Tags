@@ -1,0 +1,1 @@
+Each coil have a base temp. seen from the tooltip, for EBF, each overclock adds 100k to the base temp.

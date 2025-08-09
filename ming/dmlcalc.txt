@@ -1,0 +1,25 @@
+```
+((_) => {
+  if (!tag.args) {
+    msg.reply("\`\`\`Usage: %t dmlcalc <amount of models> <amount of items per pristine matter>.\`\`\`");
+    return;
+  }
+  let args = tag.args.toLowerCase().split(" ");
+  if (args.length < 2) {
+    msg.reply("\`\`\`Usage: %t dmlcalc <amount of models> <amount of items per pristine matter>.\`\`\`");
+    return;
+  }
+  let model_count = parseInt(args[0]);
+  let item_count = parseInt(args[1]);
+
+  let output = "Time per simulation: 15s\n" +
+               `Amount of DML models: ${model_count}\n` +
+               `Pristine chance: 30%\n` +
+               `Pristine ratter rate: ${(15 / model_count * 0.3).toFixed(2)}/s\n` +
+               `Item per pristine matter: ${item_count}\n` +
+               `Item production rate: ${(15 / model_count * 0.3 * item_count).toFixed(2)}/s`;
+
+  msg.reply(`\`\`\`${output}\`\`\``);
+})();
+
+```

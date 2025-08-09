@@ -1,0 +1,5 @@
+enderio machine, available in IV in nomifactory, combines soul vials, raw ingredients and xp into their infused counterparts.
+
+It's best to ignore the soul vials for making ae2 patterns and passively stock the soul vials with a **Powered Spawner**.
+
+(NFu only) You might want to world accelerate them to speed up late game crafting,

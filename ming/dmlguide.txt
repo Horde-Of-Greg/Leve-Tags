@@ -1,0 +1,10 @@
+```
+msg.reply({embed:{description:`
+**Deep Mob Learning** is a mod for making infinite resources, available in MV in nomifactory. see:
+- %t dml for an introduction
+- %t ppc_ce / %t ppc_ceu for a guide on making **Pulsating Polymer Clay**
+- %t dmlratio for optimizing your DML Setups
+- %t dme for **Deep Mob Evolution**, a revamped version of DML
+- %t example_dml for a good DML setup`
+}})
+```

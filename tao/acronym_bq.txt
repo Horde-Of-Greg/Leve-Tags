@@ -1,0 +1,1 @@
+Better Quests. The mod used in Nomi for the Quest Book. Useful information for its related commands like /bq_admin edit true

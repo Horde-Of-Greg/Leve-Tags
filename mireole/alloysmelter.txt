@@ -1,0 +1,1 @@
+A furnace for alloys, can be used to smelt a lot of alloys. Check JEI for more info

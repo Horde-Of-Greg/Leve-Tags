@@ -1,0 +1,6 @@
+```Why conduits are awesome:
+- Easy to get 
+- Can auto pull and push
+- Multiple types of conduits can go on a single block
+- Totally doesn't cause lag and frustration
+```

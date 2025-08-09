@@ -1,0 +1,16 @@
+Common cause for low tps (also check %t spark):
+- Excessive use of:
+  * conduits (see %t no_conduits)
+  * facades
+  * import / export buses
+  * packagedauto
+  * AA lasers
+  * crafting cards
+  * GT Pipes
+  * Drawers
+  * EIO Farming Stations (keep <5)
+
+- Unfiltered exposer to a large network
+- Large amount of entites (Make sure you void excess grains / sugarcane!)
+- (CE) Amp cramming (multiple CEFs into 1 wire)
+- Multiple drawer controllers (use controller slaves)
