@@ -1,0 +1,8 @@
+Actually Additions **Item Lasers** might first seem a good way to move items around, but they have several critical flaws that makes them absolutely terrible:
+
+- They disconnect randomly
+- They are bad for FPS as the lasers are rendered differently
+- They are a pain to configure
+- They auto-push to nearby inventories which messes up most compact setups
+
+If you were using them to automate the **Assembly Line**, consider switching to %t assline with a **AE2** based method. (oh yea lasers are recommended by questbook for some reason)

@@ -1,0 +1,7 @@
+While the fluid pattern terminal requires EV assembler to make, you can achieve fluid crafting in nfu hard mode much earlier:
+- Get a Fluid Discretizer and put it in your network
+- you should now see drops in your network
+- pull some drops out that you need in a recipes
+- and encode them as regular items in a regular pattern terminal
+  - use scroll wheel and shift+scroll wheel to increase / decrease count
+  - 1 drop = 1L of fluid

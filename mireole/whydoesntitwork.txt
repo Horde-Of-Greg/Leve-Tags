@@ -1,0 +1,13 @@
+- Does it have power ?
+- Does it have enough free slots to output items / fluids ?
+- Is it the right tier ?
+- Does the recipe need to be run in a (sterile) cleanroom ?
+
+If it's a multiblock :
+- Does it have maintenance issues ?
+- Did you set it to the right mode (some gcyms only)
+- Did you enable distinct buses (if it's running the wrong recipe) ?
+- Is the muffler hatch blocked (if it has one) ?
+
+If it's an EBF / RHF / ABS :
+- Does it have the right coil tier ?

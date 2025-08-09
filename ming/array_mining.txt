@@ -1,0 +1,13 @@
+```
+msg.reply({embed: {description: `
+- press alt
+- press “more settings”
+- check “array mode”
+- offset x/z to 3, count to 10
+- grab your local 3x3 mining hammer
+- get a direct pickaxe in your offhand / magnet if you dont have zpm
+- mine away with blazing speed
+- make sure /sethome your veins and don’t break your hammer 
+ `
+}})
+```

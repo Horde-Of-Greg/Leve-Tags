@@ -1,0 +1,4 @@
+```By using the ore drilling rig, you can macerate raw ores for 4x (3x more) crushed ore. 
+The setup consists of 2 subnets: subnet 1 (blue) has ME formation planes into a grid, and an interface supplied with raw ores. subnet 2 (gray) has ME annihilation planes 1 block below the formation planes, place a storage bus on subnet 2 which points to a trash can or a drawer for storing the leftover cobblestone.
+Make a ore drill on top of the grid (can be any tier), supply it with power and drilling fluid, put a machine controller and a redstone clock in front of the controller (fastest clock time). Ores should start to be placed and broken by the ore drill, Finally, link your ore drill output to your existing oreproc.```
+https://media.discordapp.net/attachments/954620685848825886/1281515592909721640/image.png?ex=66e145e6&is=66dff466&hm=515137aa55d78d49192b791a278ceeea8db994f255182f08fc94bc57fd496b88&=&format=webp&quality=lossless&width=356&height=810

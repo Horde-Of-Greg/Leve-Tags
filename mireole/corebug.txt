@@ -1,0 +1,1 @@
+In Nomi CEu 1.7b5c, the draconic energy core will not recognize draconium blocks from GregTech, and therefore can't be formed. To fix it, replace your `config/groovyscript.cfg` file with [this one](https://github.com/Nomi-CEu/Nomi-CEu/blob/main/overrides/config/groovyscript.cfg)

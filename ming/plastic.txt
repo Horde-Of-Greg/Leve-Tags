@@ -1,0 +1,5 @@
+There are many kinda of plastics in GT:
+- %t pe
+- %t pvc
+- %t ptfe
+- %t pbi

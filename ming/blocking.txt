@@ -1,0 +1,1 @@
+Turn on blocking mode in your ae2 interfaces if dealing with multiple inputs to avoid clogging the hell out of your machines.

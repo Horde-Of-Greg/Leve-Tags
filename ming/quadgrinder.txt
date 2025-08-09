@@ -1,0 +1,6 @@
+```
+msg.reply({embed: {image: {url: `
+https://media.discordapp.net/attachments/1267523803706294315/1287384051543441460/Untitled_Diagram.drawio.png?ex=66f15954&is=66f007d4&hm=61ce4686750f2e1e78644edae65a10dedeb24510605ef745f735994f11e8e0d5&=&format=webp&quality=lossless&width=1242&height=602%22
+`}}})
+
+```

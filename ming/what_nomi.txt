@@ -1,0 +1,1 @@
+Are you playing nomi ce or nomi ceu? Check the titlebar (the white bar above your game window) of your game. If it says “Nomifactory”, you are playing CE, if it says “Nomi-CEu”, you are playing CEu.

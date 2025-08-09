@@ -1,0 +1,9 @@
+```
+msg.reply({embed: {title: "Example Usage", description: `
+Regular Usage: \`%t oceu 7680 15\`
+EBF Usage: \`%t oceu ebf 7680 55 4500 9601\`
+With Parallel Hatch (16x with 1A): \`%t oceu 480 600 - - 16 1\`
+Chanced Outputs (14% chance, +8.5% per tier): \`%t oceu 2 20 14 8.5\`
+With Multiple Machines (12 in this case): \`%t oceu 7680 50.25 --rates:12\`
+`}})
+```

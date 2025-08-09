@@ -1,0 +1,2 @@
+Use Point to Point Dislocators to put into the dislocator receptale. Use energy relay crystals, connect to the receptale. Connect those relay crystals to I/O crystals, conencted to the input and output conduit networks.
+https://media.discordapp.net/attachments/927073124086849577/1052418228384694333/2021-12-25_23.png?width=1820&height=1002

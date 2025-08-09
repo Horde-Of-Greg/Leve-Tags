@@ -1,0 +1,7 @@
+Easy way to automate micro miners:
+
+- Create an **AE2 pattern** that has your micro miners and other stuff as inputs, and has a named items as outputs (name it something recognisable like `tier one micro miner`)
+
+- Put the pattern in the interface facing the input bus of your projector, put a **NAE2 autocomplete card** inside. So that AE2 doesn't wait for the outputs.
+
+- request any amount of micro miners you need by middle clicking that item.

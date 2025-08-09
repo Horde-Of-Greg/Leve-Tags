@@ -1,0 +1,3 @@
+Optifine is notorious for being extremely broken with mods as a result of it both being extremely invasive of the game's code, as well as being closed source, preventing mod developers from even being able to attempt to create compatablity. 
+
+There unfortunately isn’t a better option for shaders, as of writing this (July 2025).

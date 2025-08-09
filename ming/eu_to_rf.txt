@@ -1,0 +1,2 @@
+(NFu only) EU automatically converts to RF so you don't need convertors and can directly plug your cables into whatever RF machine you want.
+(Nomi CE only) use a CEU of your respective tier to convert from EU to RF.

@@ -1,0 +1,1 @@
+GregTech Energy Unit, base energy in GregTech used by all GregTech machines.

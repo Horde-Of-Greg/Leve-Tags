@@ -1,0 +1,2 @@
+For ***fps*** lag that's occurring constantly, use `/sparkc sampler --interval 1 --timeout 30` 
+For ***fps*** lag spikes that happen every now and then, use `/sparkc sampler --interval 1 --timeout 300 --only-ticks-over 50` (or check your memory settings)

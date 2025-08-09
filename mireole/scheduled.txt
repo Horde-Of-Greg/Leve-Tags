@@ -1,0 +1,4 @@
+When a craft is marked as "scheduled" by AE2, it means that it's either
+1. Waiting on on items from other recipes to schedule the recipe
+2. Waiting for the recipe to be able to be schedule (it can't currently push the items in the machine)
+If a craft is stuck with everything on scheduled, find the craft blocking all the others and troubleshoot why ae2 can't insert the items in the machine(s)

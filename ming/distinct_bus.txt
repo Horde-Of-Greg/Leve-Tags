@@ -1,0 +1,1 @@
+**Distinct Buses** is a setting for multiblock machines that **separates recipe checking per each input bus**. so like you can have a multiblock wiremill where all ingots in one bus uses the 2x wire circuit and a different input bus uses fine wire circuit. if you leave it off it'll just pick a random one of those and you'll end up with a billion fine wires you didn't ask for.

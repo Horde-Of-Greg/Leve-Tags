@@ -1,0 +1,4 @@
+The *%t assline* tag is not a very good assline setup for Nomi CEu. It does work, but is overly complicated for the task (especially in normal mode, where you don't need to have ordered items). Instead, consider following the setup mentioned in the 1.7+ questbook (gt pipes + item p2p when this tag was last updated)
+
+If you still want to use this one, keep in mind that the colored cables are only there for decorative purposes and that a single line of ae2 cable connecting all the storage buses works just fine.
+**If you're using this because of ae2fcr**, you can use a fluid storage bus on a nonuple input hatch and add a fluid discretizer to the subnet instead of relying on fluid packet decoders

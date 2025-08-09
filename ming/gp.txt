@@ -1,0 +1,8 @@
+```
+msg.reply({embed:{description:`
+"Power" System used by **Extra Utilities 2** (XU2). Made with mills. 
+- start with manual mills to make stonebrunt in a **Resonator**.
+- use the stonebrunt to make **Water Mills** (%t watermill)..
+- make a **Dragon Egg Mill** once you have access to **Rurdit** and **Dragon Eggs**`
+}})
+```

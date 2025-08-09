@@ -1,0 +1,1 @@
+Power substation, IV multiblock for storing large amounts of power.

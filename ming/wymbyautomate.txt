@@ -1,0 +1,1 @@
+are you talking about passive or on demand by "automate"? they are very different. If you passive a recipe, that means you setup dedicated machines to run the recipe unattended, sometimes an entire chain. If you on demand a recipe, that means you make patterns to slot into machines so you can call them on demand (get it?)

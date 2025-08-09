@@ -1,0 +1,1 @@
+Gregicality, an addon for GregTech introducing many endgame features. Different from Gregicality Multiblocks.

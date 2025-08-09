@@ -1,0 +1,5 @@
+(NFu Hard mode only) stabilised miners are infinite micro miners available in endgame, you should spend the first of your hearts making these and creative source.
+
+They make **pristine matter** instead of actual materials which can be exchanged for materials in **actualisation chambers**. (Tip: use stocking input buses to parallel the production of pristine matter)
+
+The order in which you get these can be whatever you want, but you generally want the t8 first.

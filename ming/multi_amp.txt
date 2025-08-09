@@ -1,0 +1,1 @@
+(NFu only) starting from EV, you can make 4A energy hatches (later 16A energy hatch at IV). They increase the *EU/t*, which allows for faster recipes with overclocking, but doesn't increase the *recipe tier*,  thus not allowing you to skip tiered recipes

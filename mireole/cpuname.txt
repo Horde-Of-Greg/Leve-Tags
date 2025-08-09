@@ -1,0 +1,1 @@
+To rename a crafting CPU, rename one of its block in an anvil.

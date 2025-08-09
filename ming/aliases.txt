@@ -1,0 +1,1 @@
+`%t alias <source> <dest>`  to redirect a tag to another

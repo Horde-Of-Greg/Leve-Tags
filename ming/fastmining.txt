@@ -1,0 +1,9 @@
+How to mine an entire ore vein in 3min:
+- Get a Efficiency 5. Unbreaking 3 (optional) Mining hammer
+- Get a diamond hook and a void satchel (whitelist cobble/netherrack)
+- (optional) Get a ZPM and a EIO sword with Direct from loot, put it in offhand for easy collecting 
+- Mine straight down
+- Mine until you find the edge of the vein
+- Press [alt] -> array mining -> offset 3 -> count 10 
+- Mining go zoom zoom (make sure to check the durability of the hammer)
+- Use the hook to move around and collect the ores

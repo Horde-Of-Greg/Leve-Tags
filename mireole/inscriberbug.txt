@@ -1,0 +1,4 @@
+In Nomifactory CEu 1.7b5, (advanced) inscribers consume items they shouldn't
+To fix it, either roll back to 1.7a4 or replace this file in the pack with this version :
+https://github.com/Nomi-CEu/Nomi-CEu/blob/5e6699960fc05ff4c22a5dbc6f4e05de42918739/overrides/groovy/postInit/Post-Initial/Main/Mod-Specific/ae2/misc.groovy
+**Fixed in 1.7b5a**

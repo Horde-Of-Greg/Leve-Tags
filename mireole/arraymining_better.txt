@@ -1,0 +1,6 @@
+Array mining allows you to mine in huge straight lines. Tips and tricks:
+- acquire a Zero-Point Module from loot and use an EIO sword with Direct found in the lost cities (in your offhand)
+- get a void satchel and whitelist cobblestone/netherrack/endstone/etc.
+- use GregTech hammers or drills and set offset to 3 for early 3xN mining
+- get a few storage satchels for longer mining sessions
+https://cdn.discordapp.com/attachments/954620685848825886/1107172805382000670/javaw_Cj15aW9fim.mp4

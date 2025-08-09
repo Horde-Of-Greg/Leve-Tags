@@ -1,0 +1,21 @@
+```
+msg.reply({embed: {description: `
+**Energy**
+- RF: Redstone Flux, used by most machines. RF = ul = FE
+- EU: GT energy unit , used by GT machines. 1 EU = 4RF
+- GP: XU2 power, %t gp for more info
+
+**Fluid**
+- 1B = 1000mB = 1000L = 1kL
+- 1kB = 1ML
+- 1MB = 1BL
+
+**Item**
+- 1 stack = 64
+- 1000 = ~16 stacks
+- 1,000,000 = ~16k stacks 
+
+**Time**
+- 1s = 20t 
+- 1min = 1200t`}})
+```

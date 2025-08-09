@@ -1,0 +1,1 @@
+(NFu only 1.7+) by putting 2 advanced computing unit, 1 regular computing unit, 5 active coolers, and 1 bridge component, you can get 36 CWU/t per hpca, which allows you skip 1 extra hpca when researching for the UHV battery

@@ -1,0 +1,2 @@
+https://docs.google.com/spreadsheets/d/1S8AUmjJBki5iZMkAxgck3xHkArG0U74DiZYS1M4REFI/
+Should be accurate for helium fusion up to at least Nomi CEu 1.4.2. Use File -> Make a copy to edit.

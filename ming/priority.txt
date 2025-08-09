@@ -1,0 +1,2 @@
+Low priority: first extract, last insert
+High priority: last extract, first insert
