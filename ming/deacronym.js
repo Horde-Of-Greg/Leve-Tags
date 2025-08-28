@@ -60,7 +60,7 @@ const banned_tags = [
       description.push(`${acronym.toUpperCase()}: ${output}`);
     } catch (e) {
       msg.reply(
-        `\`\`\`No Acronym Found, see if you misspelled, if ${acronym} is a real acryonym, add it with %t add acronym_<acronym>.\`\`\``,
+        e
       );
       return;
     }

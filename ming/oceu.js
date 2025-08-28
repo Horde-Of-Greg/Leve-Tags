@@ -83,7 +83,9 @@ function main() {
           "\n" +
           "**Options:**\n" +
           "`--lcr`: make the recipe use perfect overclock (4x speed)\n" +
-          "`--rates[:<amount>]`: shows the rate of production (amount/s)\n" +
+          "`--rates`: shows the rate of production (amount/s)\n" +
+          "`--input:[amount]`: Input amount (Items or L or fluids) of the recipe\n" +
+          "`--input:[amount]`: Ouput amount (Items or L of fluids) of the recipe\n" +
           "`--config`: applies a 0.9x boost from config maint. hatch\n" +
           "`--bulk`: running multiple recipes at once, seperate each recipe by newline\n" +
           "`--filter:<voltage>`: only show recipe by that voltage, combine with `--bulk` for production goodness\n" +
@@ -99,6 +101,10 @@ function main() {
     });
 
     return;
+  }
+
+  if (Math.random() > 0.99){
+    msg.reply("OC deez nuts\n-# run this again");
   }
 
   eval(import_code());
@@ -164,13 +170,3 @@ function main() {
 }
 
 main();
-// msg.reply({
-//   embed: {
-//     title: "Could not calculate",
-//     description: "Invaild arguments specified, please check %t oceu --help. \n",
-//     footer: {
-//       text: "Check %t oceu_examples, If this doesn't work, use %t oldceu",
-//     },
-//   },
-// });
-
