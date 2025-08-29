@@ -103,7 +103,7 @@ function main() {
     return;
   }
 
-  if (Math.random() > 0.99){
+  if (Math.random() > 0.99) {
     msg.reply("OC deez nuts\n-# run this again");
   }
 
@@ -140,22 +140,26 @@ function main() {
     let [_recipe, output] = run_recipe(recipe);
     let table = generate_table(output, recipe.flags);
 
-    msg.reply({
-      embed: {
-        title: `Input: ${recipe.base_eu} EU/t for ${recipe.base_duration / 20}s`,
-        description: `\`\`\`${table}\`\`\``,
-        footer: {
-          text: recipe.flags.includes("--ce")
-            ? "Applicable for GTCE,\n" +
-            "tiers adjusted for actual machine tier,\n" +
-            "Use a 4A CEF and a MAX energy hatch for MAX\n" +
-            "for all options and syntax see %t oceu.\n"
-            : "Applicable for NFu,\n" +
-            "tiers adjusted for actual machine tier,\n" +
-            "for all options and syntax see %t oceu.\n",
+    if (recipe.flags.includes("--text")) {
+      msg.reply(`\`\`\`${table}\`\`\``);
+    } else {
+      msg.reply({
+        embed: {
+          title: `Input: ${recipe.base_eu} EU/t for ${recipe.base_duration / 20}s`,
+          description: `\`\`\`${table}\`\`\``,
+          footer: {
+            text: recipe.flags.includes("--ce")
+              ? "Applicable for GTCE,\n" +
+              "tiers adjusted for actual machine tier,\n" +
+              "Use a 4A CEF and a MAX energy hatch for MAX\n" +
+              "for all options and syntax see %t oceu.\n"
+              : "Applicable for NFu,\n" +
+              "tiers adjusted for actual machine tier,\n" +
+              "for all options and syntax see %t oceu.\n",
+          },
         },
-      },
-    });
+      })
+    }
   } catch (error) {
     return msg.reply({
       embed: {
