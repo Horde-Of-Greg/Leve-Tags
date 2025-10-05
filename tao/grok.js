@@ -1,25 +1,23 @@
-let prompt = tag.args
-const rawKey =
-  "dmxOOVEyRVJvbWhQWG4yaFBFYW1MOTV2ZVJWR29uZ0ExRmxJakg4SXh4bUFBMXhhOHgzUkgwODNMUWIxcjdsRA==";
+let prompt = tag.args;
+const rawKey = "dmxOOVEyRVJvbWhQWG4yaFBFYW1MOTV2ZVJWR29uZ0ExRmxJakg4SXh4bUFBMXhhOHgzUkgwODNMUWIxcjdsRA==";
 
 var replyMessage = undefined;
 if (msg.reference != null) {
-  util.fetchMessages().forEach(function (msg1, index) {
-    if (msg1.id == msg.reference.messageId) {
-      replyMessage = msg1;
-    }
-  });
+    util.fetchMessages().forEach(function (msg1, index) {
+        if (msg1.id === msg.reference.messageId) {
+            replyMessage = msg1;
+        }
+    });
 }
 
 const lastMsg = util.fetchMessages(msg.channel.messages.slice(-1)[0])[0];
 
-
-const promptAttachment = msg.attachments[0] ? msg.attachments[0].url : null;
-const txtContext = replyMessage ? replyMessage.cleanContent ? replyMessage.cleanContent : null : null;
-const contextEmbed = replyMessage ? replyMessage.embeds[0] ? replyMessage.embeds[0].description : null : null;
-const context = txtContext ? txtContext : contextEmbed ? contextEmbed : null;
-const contextAttachment = replyMessage ? replyMessage.attachments[0] ? replyMessage.attachments[0].url : null : null;
-const attachment = promptAttachment ? promptAttachment : contextAttachment ? contextAttachment : null;
+const promptAttachment = msg.attachments?.[0]?.url ?? null;
+const txtContext = replyMessage?.cleanContent ?? null;
+const contextEmbed = replyMessage?.embeds?.[0]?.description ?? null;
+const context = txtContext ?? contextEmbed ?? null;
+const contextAttachment = replyMessage?.attachments?.[0]?.url ?? null;
+const attachment = promptAttachment ?? contextAttachment ?? null;
 
 /* Situations:
  * -2 - On a server that's not allowed
@@ -28,14 +26,14 @@ const attachment = promptAttachment ? promptAttachment : contextAttachment ? con
  * 1 - Send Help string
  * 2 - Send Thought process
  */
+
 let situation = undefined;
+
 if (lastMsg.guildId === "701354865217110096") {
     situation = -2;
-}
-else if (prompt == null || prompt.trim() === "") {
+} else if (prompt == null || prompt.trim() === "") {
     situation = -1;
-}
-else if (prompt.toLowerCase().trim().match(/^-?-?help$/i)) {
+} else if (prompt.toLowerCase().trim().match(/^-?-?help$/i)) {
     situation = 1;
 } else if (prompt.toLowerCase().includes("--thought")) {
     prompt = prompt.replace(/--thought/g, "").trim();
@@ -49,27 +47,28 @@ let errored = false;
 let errorCode = 200;
 let errorMessage = "";
 let replyImageURL = null;
+
 if (situation !== 1 && situation !== -2) {
     try {
         response = http.request({
             url: "http://37.27.51.247:3002/grok",
             method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-        },
-        data: {
-            userId: msg.authorId,
-            prompt: prompt,
-            attachment: attachment,
-            key: rawKey,
-            context: context,
-        }
-    })
+            responseType: "json",
+            data: {
+                userId: msg.authorId,
+                prompt: prompt,
+                attachment: attachment,
+                key: rawKey,
+                context: context
+            }
+        });
     } catch (error) {
         errored = true;
+
         const match = error.message.match(/(\d+)/);
         errorCode = match ? parseInt(match[1], 10) : null;
         errorMessage = error.message;
+
         switch (errorCode) {
             case 37:
                 response = `Error: The server is down. I'm probably editing the code right now. Try again in 30s`;
@@ -90,16 +89,17 @@ if (situation !== 1 && situation !== -2) {
                 response = `Leveret timed out. Try again. ${error.message}`;
                 break;
             default:
-            response = `Unexpected Error: ${error.message}`;
+                response = `Unexpected Error: ${error.message}`;
+                break;
         }
     }
-};
+}
 
 if (errored) {
     situation = -1;
 }
 
-const grokPfp = "https://cdn.discordapp.com/attachments/927073124086849577/1404258458177372301/iu.png?ex=689a891a&is=6899379a&hm=aea64f5f451dc9e464aa494ef683ebf2b3d952e775c02771ecdfb9d4512e033d&"
+const grokPfp = "https://cdn.discordapp.com/attachments/927073124086849577/1404258458177372301/iu.png?ex=689a891a&is=6899379a&hm=aea64f5f451dc9e464aa494ef683ebf2b3d952e775c02771ecdfb9d4512e033d&";
 let footerText = "";
 
 switch (situation) {
@@ -107,22 +107,25 @@ switch (situation) {
         descriptionContent = "This command is not allowed on this server.";
         footerText = "Server Not Allowed";
         break;
-    case -1: 
+    case -1:
         descriptionContent = response;
         footerText = `Error Code: ${errorCode ?? "Unknown"}`;
         break;
     case 0:
-        descriptionContent = shortenTo30Lines(JSON.parse(response.data).completion.choices[0].message.content);
-        timeTaken = Math.round(JSON.parse(response.data).duration);
-        model = JSON.parse(response.data).completion.model;
+        descriptionContent = shortenTo30Lines(response.data.completion.choices[0].message.content);
+
+        timeTaken = Math.round(response.data.duration);
+        model = response.data.completion.model;
         footerText = `Time Taken: ${timeTaken}ms | Model: ${model} | Water Used: ${calcWaterEquivalent(response)}mB`;
+
         if (descriptionContent.match(/.*--navyseal.*/i)) {
             footerText += ` | Navy Seal Mode: Activated`;
             descriptionContent = util.fetchTag("navyseal").body;
         }
+
         break;
     case 1:
-        descriptionContent = 
+        descriptionContent =
 `# Usage information
 ### Flags
 - \`-help\`: Show this help message (can't be used with anything else)
@@ -143,9 +146,10 @@ switch (situation) {
         footerText = "Called via -help";
         break;
     case 2:
-        descriptionContent = shortenTo30Lines(JSON.parse(response.data).completion.choices[0].message.reasoning_content);
-        timeTaken = Math.round(JSON.parse(response.data).duration);
-        model = JSON.parse(response.data).completion.model;
+        descriptionContent = shortenTo30Lines(response.data.completion.choices[0].message.reasoning_content);
+
+        timeTaken = Math.round(response.data.duration);
+        model = response.data.completion.model;
         footerText = `Time Taken: ${timeTaken}ms | Model: ${model} | Water Used: ${calcWaterEquivalent(response)}mB`;
         break;
     default:
@@ -169,7 +173,7 @@ msg.reply({
         },
         color: 0x00AE86
     }
-}) 
+});
 
 function shortenTo30Lines(text) {
     const lines = text.split("\n");
@@ -183,7 +187,7 @@ function shortenTo30Lines(text) {
  */
 
 function calcWaterEquivalent(response) {
-    const tokens = JSON.parse(response.data).completion.usage.total_tokens;
-    const grok3MiniWater = Math.ceil((tokens / 20) * 50 / 1000);
+    const tokens = response.data.completion.usage.total_tokens;
+    const grok3MiniWater = Math.ceil(((tokens / 20) * 50) / 1000);
     return grok3MiniWater;
 }
