@@ -97,46 +97,25 @@ def read_resource(slug: str):
         # error field will be None/omitted by default
     )
 
-# Search endpoint can also adopt this pattern if needed, but current one raises HTTPException for bad query
 @app.get("/search/resources", response_model=SearchResponse)
 def search_resources(q: str | None = None):
     if not q or len(q.strip()) < 2:
         raise HTTPException(status_code=400, detail="Search query 'q' is required and must be at least 2 characters long.")
 
-    db = get_conn("main")
+    db = get_conn("main") # Search is on the main branch
     
-    # Sanitize and prepare the search query for FTS
-    # For boolean mode, you can add operators like +required -excluded *wildcard
-    # For natural language mode, it's usually just the terms.
-    # Let's use natural language mode for simplicity, which handles plurals reasonably well by default.
-    # MySQL's FTS (and thus Dolt's) has built-in handling for common English pluralization.
-    # For example, searching for "apples" can find "apple" and vice-versa.
-    
-    search_query_fts = sql_escape(q.strip()) # Escape single quotes for the string literal
+    original_user_query = q.strip()
+    # Prepare search term for case-insensitive LIKE with wildcards
+    query_term_for_like = f"%{sql_escape(original_user_query.lower())}%" 
 
-    # FTS Query in Natural Language Mode
-    # We also calculate a relevance score to order by it.
+    # SQL query using LIKE for case-insensitive search
     search_sql = (
-        "SELECT slug, title, body_md, "
-        "MATCH(title, body_md) AGAINST('{}' IN NATURAL LANGUAGE MODE) AS relevance " # Calculate relevance
-        "FROM resources "
-        "WHERE MATCH(title, body_md) AGAINST('{}' IN NATURAL LANGUAGE MODE) " # The actual search condition
+        "SELECT slug, title, body_md FROM resources "
+        f"WHERE (LOWER(title) LIKE '{query_term_for_like}' OR LOWER(body_md) LIKE '{query_term_for_like}') "
         "AND approved = TRUE "
-        "ORDER BY relevance DESC, title ASC " # Order by relevance, then title
-        "LIMIT 20;"
-    ).format(search_query_fts, search_query_fts) # Pass the query twice
-
-    # Alternative: Boolean Mode (more control, but user needs to know syntax or you build it)
-    # Example: search_query_fts_boolean = "+{}*".format(sql_escape(q.strip())) # Require term, allow wildcard
-    # search_sql = (
-    #     "SELECT slug, title, body_md, "
-    #     "MATCH(title, body_md) AGAINST('{}' IN BOOLEAN MODE) AS relevance "
-    #     "FROM resources "
-    #     "WHERE MATCH(title, body_md) AGAINST('{}' IN BOOLEAN MODE) "
-    #     "AND approved = TRUE "
-    #     "ORDER BY relevance DESC, title ASC "
-    #     "LIMIT 20;"
-    # ).format(search_query_fts_boolean, search_query_fts_boolean)
+        "ORDER BY title ASC " # Simple alphabetical order by title
+        "LIMIT 20;" 
+    )
     
     search_output = db.sql(search_sql, result_format="json")
     raw_results = as_row_list(search_output)
@@ -144,40 +123,27 @@ def search_resources(q: str | None = None):
     results_list: list[SearchResultItem] = []
     for r_dict in raw_results:
         title = r_dict.get("title", "N/A")
-        body = r_dict.get("body_md", "")
+        body = r_dict.get("body_md", "") 
         slug = r_dict.get("slug", "N/A")
 
-        # Snippet generation (can be improved to highlight matched terms from FTS if possible)
-        # For now, using the same "first line / first 10 words" logic
+        # SIMPLIFIED Snippet Generation (First 10 words of body, or title)
         snippet = None
-        # The query 'q' here is the original user query, not the FTS formatted one
-        query_term_for_snippet = q.strip().lower() 
-        body_lower = body.lower()
-        title_lower = title.lower()
+        if body:
+            words = body.split()
+            first_few_words = " ".join(words[:10])
+            if len(words) > 10 or len(first_few_words) > 97 :
+                snippet = first_few_words[:97] + "..."
+            else:
+                snippet = first_few_words + ("..." if len(words) > 10 else "")
 
-        try:
-            idx_title = title_lower.find(query_term_for_snippet)
-            idx_body = body_lower.find(query_term_for_snippet)
-
-            if idx_title != -1:
-                start = max(0, idx_title - 20); end = min(len(title), idx_title + len(query_term_for_snippet) + 20)
-                snippet = ("..." if start > 0 else "") + title[start:end] + ("..." if end < len(title) else "")
-            elif idx_body != -1:
-                start = max(0, idx_body - 30); end = min(len(body), idx_body + len(query_term_for_snippet) + 30)
-                snippet = ("..." if start > 0 else "") + body[start:end] + ("..." if end < len(body) else "")
-            else: # Fallback if exact term not found for snippet (FTS might match variants)
-                first_line = body.split('\n', 1)[0]
-                words = body.split()
-                first_10_words = " ".join(words[:10])
-                if len(first_line) <= 70 or len(words) <= 10 : snippet = first_line
-                else: snippet = first_10_words
-                if len(snippet) > 100: snippet = snippet[:97] + "..."
-        except Exception: 
-            snippet = (title[:50] + '...') if len(title) > 50 else title
+        elif title: 
+            snippet = (title[:97] + "...") if len(title) > 100 else title
+        else:
+            snippet = "N/A"
         
         results_list.append(SearchResultItem(slug=slug, title=title, snippet=snippet))
 
-    return SearchResponse(query=q.strip(), results=results_list, count=len(results_list))
+    return SearchResponse(query=original_user_query, results=results_list, count=len(results_list))
 
 
 # /suggest and /edit endpoints already return a JSON dict with an "error" or "msg" key,

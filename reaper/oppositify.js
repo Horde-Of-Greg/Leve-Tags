@@ -7,19 +7,19 @@ const message = getTargetMessage();
 const user = getTargetUser(msg);
 
 if (String(user.id) == "673522905836945455" && !msg.author.id == "673522905836945455") {
-    msg.reply("This user can't be correctified, silly!");
+    msg.reply("This user can't be oppositified, silly!");
 }
 
 let content = message.content;
 const res = http.request({
     method: "POST",
-    url: "https://leveret-incorrectify.up.railway.app/incorrectify",
+    url: "https://leveret-incorrectify.up.railway.app/oppositify",
     headers: { "Content-Type": "application/json" },
     data: { text: content },
     responseType: "json"
 });
 
-const incorrectified = res.data?.text || "⚠️ AI did not respond.";
+const oppositified = res.data?.text || "⚠️ AI did not respond.";
 
 msg.reply({
     embed: {
@@ -27,6 +27,6 @@ msg.reply({
             name: user.displayName,
             icon_url: user.displayAvatarURL,
         },
-        description: incorrectified,
+        description: oppositified,
     },
 });

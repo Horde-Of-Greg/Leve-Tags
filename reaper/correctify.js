@@ -13,13 +13,13 @@ if (String(user.id) == "673522905836945455" && !msg.author.id == "67352290583694
 let content = message.content;
 const res = http.request({
     method: "POST",
-    url: "https://leveret-incorrectify.up.railway.app/incorrectify",
+    url: "https://leveret-incorrectify.up.railway.app/correctify",
     headers: { "Content-Type": "application/json" },
     data: { text: content },
     responseType: "json"
 });
 
-const incorrectified = res.data?.text || "⚠️ AI did not respond.";
+const correctified = res.data?.text || "⚠️ AI did not respond.";
 
 msg.reply({
     embed: {
@@ -27,6 +27,6 @@ msg.reply({
             name: user.displayName,
             icon_url: user.displayAvatarURL,
         },
-        description: incorrectified,
+        description: correctified,
     },
 });

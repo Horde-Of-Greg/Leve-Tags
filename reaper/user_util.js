@@ -33,6 +33,28 @@ function getTargetUser(msg) {
     return user;
 }
 
+function getRepliedMessage() {
+    if (msg.reference != null) {
+        util.fetchMessages().forEach(function(msg1, index) {
+            if (msg1.id == msg.reference.messageId) {
+                return msg1;
+            }
+        });
+    }
+    else {
+        return null;
+    }
+}
+
+function getRepliedUser(msg) {
+    if (msg.mentions?.repliedUser) {
+      let matches = util.findUsers(msg.mentions.repliedUser);
+      if (matches.length) return matches[0];
+    } else {
+        return null;
+    }
+}
+
 function isWhitelisted(user) {
     let whitelist = [
         // ["     User ID      "]        name
@@ -65,6 +87,8 @@ module.exports = {
     getTargets,
     getTargetMessage,
     getTargetUser,
+    getRepliedMessage,
+    getRepliedUser,
     isWhitelisted
 }
 
