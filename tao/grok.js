@@ -12,10 +12,7 @@ if (msg.reference != null) {
 const lastMsg = util.fetchMessages(msg.channel.messages.slice(-1)[0])[0];
 
 const promptAttachment = msg.attachments?.[0]?.url ?? null;
-const txtContext = replyMessage?.cleanContent ?? null;
-const contextEmbed = replyMessage?.embeds?.[0]?.description ?? null;
-const context = txtContext ?? contextEmbed ?? null;
-const contextAttachment = replyMessage?.attachments?.[0]?.url ?? null;
+const context = replyMessage?.cleanContent ?? "null";
 const attachment = null;
 
 /* Situations:
