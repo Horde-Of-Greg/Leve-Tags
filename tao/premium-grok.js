@@ -9,24 +9,21 @@ if (msg.reference != null) {
   });
 }
 
-const allMsgs = util.fetchMessages(msg.channel.messages.slice(-1)[0]);
-const lastMsg = allMsgs[0];
+const lastMsg = util.fetchMessages(msg.channel.messages.slice(-1)[0])[0];
 
 const promptAttachment = msg.attachments?.[0]?.url ?? null;
-const txtContext = replyMessage ?? null;
+let txtContext = replyMessage ?? null;
+if (txtContext === "") txtContext = null;
 const contextEmbed = replyMessage?.embeds?.[0] ?? null;
 let context = "";
 if (txtContext) {
   context = `User ${txtContext.authorId} wrote:${txtContext.cleanContent}`;
-}
-
-if (contextEmbed) {
-  context = `User ${txtContext.author?.name ?? "undefined"} wrote:${
-    txtContext.cleanContent
+} else if (contextEmbed) {
+  context = `User ${contextEmbed.author?.name ?? "undefined"} wrote:${
+    contextEmbed.description
   }`;
 }
-
-const attachment = null;
+if (context === "") context = "null";
 
 /* Situations:
  * -2 - On a server that's not allowed
@@ -206,10 +203,11 @@ function shortenTo30Lines(text) {
 
 /* Calculate token to water equivalent
  * Hypothesis : GPT4 uses 500mL of water for 20 tokens.
+ * Grok-3-mini uses 10x less water per token, so 50mL for 20 tokens. Or 2.5mL per token.
  */
 
 function calcWaterEquivalent(response) {
   const tokens = response.data.completion.usage.total_tokens;
-  const grok3MiniWater = Math.ceil(((tokens / 20) * 500) / 1000);
+  const grok3MiniWater = Math.ceil(((tokens / 20) * 50) / 1000);
   return grok3MiniWater;
 }
