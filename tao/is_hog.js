@@ -1,10 +1,10 @@
+if (!util.findUsers) util.findUsers = (ignored) => [msg.author];
 
-if (!util.findUsers) util.findUsers = ignored => [msg.author];
-
-const hogList = http.request("http://37.27.220.107:8000/members").data.member_ids;
+const hogList = http.request("http://37.27.220.107:3002/data/members/ids").data
+  .members;
 var user = undefined;
 if (tag && tag.args) {
-  var args = tag.args.split(' ');
+  var args = tag.args.split(" ");
   let users = util.findUsers(args[0]);
   if (users.length > 0) {
     user = users[0];
@@ -23,24 +23,24 @@ if (tag && tag.args) {
 
 if (hogList.includes(user.id)) {
   msg.reply({
-  embed: {
-    author: {
-      name: user.displayName,
-      icon_url: user.displayAvatarURL,
+    embed: {
+      author: {
+        name: user.displayName,
+        icon_url: user.displayAvatarURL,
+      },
+      description: "I'm a real, verified, HOGger",
+      color: 0x00ff00,
     },
-    description: "I'm a real, verified, HOGger",
-    color: 0x00ff00,
-  },
-});
+  });
 } else {
   msg.reply({
-  embed: {
-    author: {
-      name: user.displayName,
-      icon_url: user.displayAvatarURL,
+    embed: {
+      author: {
+        name: user.displayName,
+        icon_url: user.displayAvatarURL,
+      },
+      description: "I'm a fake, impostor, HOGger",
+      color: 0xff0000,
     },
-    description: "I'm a fake, impostor, HOGger",
-    color: 0xff0000,
-  },
-});
+  });
 }

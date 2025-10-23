@@ -1,5 +1,5 @@
-
-let noSkillIssue = http.request("http://37.27.220.107:8000/members").data.member_ids; // HOG API
+let noSkillIssue = http.request("http://37.27.220.107:3002/data/members/ids")
+  .data.members; // HOG API
 
 let blacklisted = [];
 
