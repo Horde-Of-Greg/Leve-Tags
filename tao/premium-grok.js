@@ -25,6 +25,8 @@ if (txtContext) {
 }
 if (context === "") context = "null";
 
+const attachment = null;
+
 /* Situations:
  * -2 - On a server that's not allowed
  * -1 - Error occurred
