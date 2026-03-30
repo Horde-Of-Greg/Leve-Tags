@@ -54,6 +54,7 @@ class HolinessCalculator {
      */
     calcHoliness() {
         let runningScore = 0;
+        let realWordsCount = 0;
         const words = this.message.split(" ");
 
         for (const word of words) {
@@ -65,9 +66,10 @@ class HolinessCalculator {
             if (this.stopWords.includes(sanitizedWord)) continue;
 
             runningScore += this.calcScore(sanitizedWord);
+            realWordsCount++;
         }
 
-        const optimalMessageScore = this.optimalScore * words.length;
+        const optimalMessageScore = this.optimalScore * realWordsCount;
         if (optimalMessageScore <= 0) return 0;
 
         return runningScore / optimalMessageScore;
